@@ -1,6 +1,7 @@
 /* KIKO's live facts: answers "who is the president of France?", "capital of Japan?",
    "भारत के प्रधानमंत्री कौन हैं?", "ಕರ್ನಾಟಕದ ಮುಖ್ಯಮಂತ್ರಿ ಯಾರು?" by looking them up in Wikidata,
    the free encyclopedia data behind Wikipedia that volunteers keep up to date.
+   Also answers "what is today's date / time / day" from the device's own clock (works offline).
 
    Why: a tiny offline brain only knows the world as it was when it was trained, and often guesses.
    Facts that change (leaders, population) need a live lookup, so this needs the internet.
@@ -100,7 +101,7 @@
   }
   // Kannada adds endings for "of": ಭಾರತದ -> ಭಾರತ, ಜಪಾನಿನ -> ಜಪಾನ್, ಕರ್ನಾಟಕದ -> ಕರ್ನಾಟಕ
   function knStems(w) {
-    w = w.replace(/‌/g, "");
+    w = w.replace(/\u200c/g, "");
     const out = [];
     if (/ದ$/.test(w)) out.push(w.slice(0, -1));
     if (/ಿನ$/.test(w)) out.push(w.slice(0, -2) + "್");
@@ -230,7 +231,38 @@
     return L.pre + (lang === "en" ? line : cap(line));
   }
 
+  /* ---------- date and time: from the device's own clock (works offline) ---------- */
+  const CLOCK = [
+    ["time", /\b(what|wt|whats|what's)\s*(is\s*)?(the\s*)?time\b|\bwhat time is it\b|\b(current|right) time\b|\btime (now|right now|please|pls)\b|^\s*time\s*$|कितने बजे|क्या समय|समय क्या|अभी समय|टाइम क्या|kitne baje|ಎಷ್ಟು ಗಂಟೆ|ಗಂಟೆ ಎಷ್ಟು|ಸಮಯ ಎಷ್ಟು|ಈಗ ಸಮಯ|ಟೈಮ್ ಎಷ್ಟು/i],
+    ["date", /\bdate\b|तारीख|तारीख़|दिनांक|tarikh|ದಿನಾಂಕ|ತಾರೀಖು|ಡೇಟ್/i],
+    ["day", /\b(what|wt|which|whats|what's)\s*(is\s*)?(the\s*)?day\b|\bday (is it|today)\b|\btoday'?s day\b|कौन सा दिन|कौनसा दिन|क्या दिन|कौन सा वार|ಯಾವ ದಿನ|ಯಾವ ವಾರ|ಏನು ವಾರ/i],
+    ["month", /\b(what|wt|which|whats|what's)\s*(is\s*)?(the\s*)?month\b|\bcurrent month\b|कौन सा महीना|कौनसा महीना|ಯಾವ ತಿಂಗಳು/i],
+    ["year", /\b(what|wt|which|whats|what's)\s*(is\s*)?(the\s*)?year\b|\bcurrent year\b|कौन सा साल|कौनसा साल|कौन सा वर्ष|ಯಾವ ವರ್ಷ/i],
+  ];
+  const CLOCK_SAY = {
+    en: {date: "Today is {date}.", time: "It's {time} right now.", day: "Today is {weekday}.", month: "This month is {month}.", year: "This year is {year}."},
+    hi: {date: "आज {date} है।", time: "अभी {time} बजे हैं।", day: "आज {weekday} है।", month: "यह {month} का महीना है।", year: "यह साल {year} है।"},
+    kn: {date: "ಇಂದು {date}.", time: "ಈಗ ಸಮಯ {time}.", day: "ಇಂದು {weekday}.", month: "ಈ ತಿಂಗಳು {month}.", year: "ಈ ವರ್ಷ {year}."},
+  };
+  function clock(text, lang, now) {
+    const t = (text || "").toLowerCase();
+    const hit = CLOCK.find(([, rx]) => rx.test(t));
+    if (!hit) return null;
+    if (hit[0] === "date" && /\b(update|dates|dated|play ?date|due date|birth ?date|date of)\b/.test(t)) return null;
+    now = now || new Date();
+    lang = CLOCK_SAY[lang] ? lang : "en";
+    const loc = {en: "en-IN", hi: "hi-IN", kn: "kn-IN"}[lang];
+    const f = o => { try { return now.toLocaleString(loc, o); } catch (e) { return now.toLocaleString("en-IN", o); } };
+    const h = now.getHours(), m = String(now.getMinutes()).padStart(2, "0");
+    const time = lang === "en" ? `${h % 12 || 12}:${m} ${h < 12 ? "AM" : "PM"}` : `${h % 12 || 12}:${m}`;
+    const v = {date: f({weekday: "long", day: "numeric", month: "long", year: "numeric"}), time, weekday: f({weekday: "long"}),
+               month: f({month: "long"}), year: String(now.getFullYear())};
+    return fill(CLOCK_SAY[lang][hit[0]], v);
+  }
+
   async function answer(text, lang) {
+    const c = clock(text, lang || "en");
+    if (c) return c;
     const q = parse(text || "", lang || "en");
     if (!q) return null;
     const L = SAY[lang] || SAY.en;
@@ -240,5 +272,5 @@
     catch (e) { console.log("facts lookup failed", e); return q.role === "person" ? null : L.offline; }
   }
 
-  window.KikoFacts = {answer, _t: {parse, knStems, current, bigNumber}};
+  window.KikoFacts = {answer, _t: {parse, knStems, current, bigNumber, clock}};
 })();
