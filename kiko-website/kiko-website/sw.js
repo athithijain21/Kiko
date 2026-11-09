@@ -1,10 +1,10 @@
 /* KIKO offline helper (service worker).
    Keeps the Playroom's own files on the device, so KIKO opens even without internet
    after the first visit. KIKO's brain (the model) is stored separately by the AI runtime. */
-const CACHE = "kiko-20261109093937";
+const CACHE = "kiko-20261109102951";
 const CORE = [
   "./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png",
-  "static/kiko-brain.js", "static/brain-data.json",
+  "static/kiko-brain.js", "static/kiko-facts.js", "static/brain-data.json",
   "kiko/content.json", "kiko/content_hi.json", "kiko/content_kn.json",
   "static/fonts/fredoka-latin-500-normal.woff2", "static/fonts/fredoka-latin-600-normal.woff2",
   "static/fonts/andika-latin-400-normal.woff2", "static/fonts/andika-latin-700-normal.woff2",

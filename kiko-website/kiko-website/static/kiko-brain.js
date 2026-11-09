@@ -183,6 +183,36 @@
   }
   const storyText = (s, C) => s.lines.join(" ") + " " + (C.lesson_prefix || "And the lesson is:") + " " + s.lesson;
 
+  /* ---------------- songs (same as library.match_song) ---------------- */
+  const SING_ASK = /\b(sing|singing|song|songs|rhyme|rhymes|nursery|poem)\b|गाना|गाने|गाओ|गीत|कविता|ಹಾಡು|ಹಾಡ|ಪದ್ಯ|ಗೀತೆ/i;
+  const NOT_SING = /\brhymes? with\b|\bwhat is a (song|poem|rhyme)\b/i;
+  function matchSong(text, C, Cen) {
+    const t = text.toLowerCase();
+    if (!SING_ASK.test(t) || NOT_SING.test(t)) return null;
+    const songs = (C && C.songs && C.songs.length ? C.songs : (Cen && Cen.songs)) || [];
+    let bestId = null, bestLen = 0;
+    for (const src of [C, Cen]) for (const s of (src && src.songs) || []) for (const kw of s.keywords || []) {
+      if (has(t, kw) && kw.length > bestLen) { bestId = s.id; bestLen = kw.length; }
+    }
+    return songs.find(s => s.id === bestId) || songs[0] || null;
+  }
+  const songText = (s, C) => ((C.ui || {})["Let's sing {title}! Sing along with me!"] || "Let's sing {title}! Sing along with me!").replace("{title}", s.title)
+    + "\n" + s.lines.map(l => l.text).join("\n");
+
+  /* ---------------- questions about KIKO itself (same as library.match_faq) ---------------- */
+  const norm = s => s.toLowerCase().replace(/[^\p{L}\p{N}_\sऀ-ॿಀ-೿]+/gu, " ").split(/\s+/).filter(Boolean).join(" ");
+  function matchFaq(text, C, Cen) {
+    const t = norm(text);
+    if (!t || t.length > 80) return null;
+    let bestId = null, bestLen = 0;
+    for (const src of [C, Cen]) for (const q of (src && src.faq) || []) {
+      if ((q.exact || []).map(norm).includes(t)) { bestId = q.id; bestLen = 999; }
+      for (const kw of q.keys || []) { const k = norm(kw); if (has(t, k) && k.length > bestLen) { bestId = q.id; bestLen = k.length; } }
+    }
+    if (!bestId) return null;
+    return ((C && C.faq) || []).find(q => q.id === bestId) || ((Cen && Cen.faq) || []).find(q => q.id === bestId) || null;
+  }
+
   /* ---------------- the model ---------------- */
   // Absolute address of the website folder (works on GitHub Pages sub-folders like /kiko/).
   const siteRoot = base => new URL(base || "./", document.baseURI).href;
@@ -267,6 +297,10 @@
     if (!history.length) greet(o.lang);
     const chk = checkInput(text);
     if (!chk.safe) return {text: fixedReply(chk.category, o.lang), source: "fixed_reply"};
+    const faq = matchFaq(text, o.content, o.contentEn);
+    if (faq) { remember(text, faq.answer); return {text: faq.answer, source: "faq"}; }
+    const song = matchSong(text, o.content, o.contentEn);
+    if (song) { const s = songText(song, o.content); remember(text, s); return {text: s, source: "song", song: song.id}; }
     const story = matchStory(text, o.mode, o.content, o.contentEn);
     if (story) { const s = storyText(story, o.content); remember(text, s); return {text: s, source: "library"}; }
     if (!wllama || !wllama.isModelLoaded()) return {text: null, source: "need_brain"};
@@ -296,6 +330,6 @@
     // exposed for tests
     hasGPU, useGPU, setGPU: on => store.set("use_gpu", !!on),
     multiThread: () => typeof crossOriginIsolated !== "undefined" && crossOriginIsolated,
-    _t: {checkInput, checkOutput, cleanOutput, simplify, sentences, matchStory, storyText, systemPrompt, fewShot, maxTokens, maxSentences, readability, looksBroken, capLength},
+    _t: {checkInput, checkOutput, cleanOutput, simplify, sentences, matchStory, matchFaq, norm, matchSong, songText, storyText, systemPrompt, fewShot, maxTokens, maxSentences, readability, looksBroken, capLength},
   };
 })();

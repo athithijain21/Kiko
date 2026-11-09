@@ -1,5 +1,5 @@
 {
-  "_about": "KIKO's curated learning content. Facts here are checked by people, so KIKO never invents them. Add items freely: the Playroom and the server read this file on start. Animals may have a \"speak\" field: how KIKO says the sound out loud when the written sound isn't easy to read (like \"Grrr!\").",
+  "_about": "KIKO's curated learning content. Facts here are checked by people, so KIKO never invents them. Add items freely: the Playroom and the server read this file on start. Animals may have a \"speak\" field: how KIKO says the sound out loud when the written sound isn't easy to read (like \"Grrr!\"). \"songs\": tunes are written as NOTE:BEATS (C4:1 = middle C for one beat); the songs are public-domain nursery tunes, and the Hindi/Kannada words are new lyrics on those tunes. \"faq\": checked answers about KIKO itself.",
   "letters": [
     {
       "l": "A",
@@ -714,5 +714,216 @@
     "0000000004": {
       "open": "calm"
     }
-  }
+  },
+  "songs": [
+    {
+      "id": "twinkle",
+      "title": "Twinkle, Twinkle, Little Star",
+      "e": "⭐",
+      "tempo": 100,
+      "keywords": [
+        "twinkle",
+        "little star",
+        "star"
+      ],
+      "lines": [
+        {
+          "text": "Twinkle, twinkle, little star,",
+          "notes": "C4:1 C4:1 G4:1 G4:1 A4:1 A4:1 G4:2"
+        },
+        {
+          "text": "How I wonder what you are!",
+          "notes": "F4:1 F4:1 E4:1 E4:1 D4:1 D4:1 C4:2"
+        },
+        {
+          "text": "Up above the world so high,",
+          "notes": "G4:1 G4:1 F4:1 F4:1 E4:1 E4:1 D4:2"
+        },
+        {
+          "text": "Like a diamond in the sky.",
+          "notes": "G4:1 G4:1 F4:1 F4:1 E4:1 E4:1 D4:2"
+        },
+        {
+          "text": "Twinkle, twinkle, little star,",
+          "notes": "C4:1 C4:1 G4:1 G4:1 A4:1 A4:1 G4:2"
+        },
+        {
+          "text": "How I wonder what you are!",
+          "notes": "F4:1 F4:1 E4:1 E4:1 D4:1 D4:1 C4:2"
+        }
+      ]
+    },
+    {
+      "id": "row-boat",
+      "title": "Row, Row, Row Your Boat",
+      "e": "🚣",
+      "tempo": 110,
+      "keywords": [
+        "row",
+        "boat"
+      ],
+      "lines": [
+        {
+          "text": "Row, row, row your boat,",
+          "notes": "C4:1.5 C4:1.5 C4:1 D4:0.5 E4:1.5"
+        },
+        {
+          "text": "Gently down the stream.",
+          "notes": "E4:1 D4:0.5 E4:1 F4:0.5 G4:3"
+        },
+        {
+          "text": "Merrily, merrily, merrily, merrily,",
+          "notes": "C5:0.5 C5:0.5 C5:0.5 G4:0.5 G4:0.5 G4:0.5 E4:0.5 E4:0.5 E4:0.5 C4:0.5 C4:0.5 C4:0.5"
+        },
+        {
+          "text": "Life is but a dream!",
+          "notes": "G4:1 F4:0.5 E4:1 D4:0.5 C4:3"
+        }
+      ]
+    },
+    {
+      "id": "old-macdonald",
+      "title": "Old MacDonald Had a Farm",
+      "e": "🐄",
+      "tempo": 120,
+      "keywords": [
+        "macdonald",
+        "farm",
+        "cow"
+      ],
+      "lines": [
+        {
+          "text": "Old MacDonald had a farm,",
+          "notes": "G4:1 G4:1 G4:1 D4:1 E4:1 E4:1 D4:2"
+        },
+        {
+          "text": "E-I-E-I-O!",
+          "notes": "B4:1 B4:1 A4:1 A4:1 G4:3"
+        },
+        {
+          "text": "And on that farm he had a cow,",
+          "notes": "D4:1 G4:1 G4:1 G4:1 D4:1 E4:1 E4:1 D4:2"
+        },
+        {
+          "text": "E-I-E-I-O!",
+          "notes": "B4:1 B4:1 A4:1 A4:1 G4:3"
+        },
+        {
+          "text": "With a moo moo here, and a moo moo there,",
+          "notes": "D4:0.5 D4:0.5 G4:1 G4:1 G4:1 D4:0.5 D4:0.5 G4:1 G4:1 G4:1"
+        },
+        {
+          "text": "Here a moo, there a moo, everywhere a moo moo,",
+          "notes": "G4:0.5 G4:0.5 G4:1 G4:0.5 G4:0.5 G4:1 G4:0.5 G4:0.5 G4:0.5 G4:0.5 G4:1 G4:1"
+        },
+        {
+          "text": "Old MacDonald had a farm,",
+          "notes": "G4:1 G4:1 G4:1 D4:1 E4:1 E4:1 D4:2"
+        },
+        {
+          "text": "E-I-E-I-O!",
+          "notes": "B4:1 B4:1 A4:1 A4:1 G4:3"
+        }
+      ]
+    },
+    {
+      "id": "baa-baa",
+      "title": "Baa, Baa, Black Sheep",
+      "e": "🐑",
+      "tempo": 100,
+      "keywords": [
+        "baa",
+        "sheep",
+        "wool"
+      ],
+      "lines": [
+        {
+          "text": "Baa, baa, black sheep, have you any wool?",
+          "notes": "C4:1 C4:1 G4:1 G4:1 A4:0.5 A4:0.5 A4:0.5 A4:0.5 G4:2"
+        },
+        {
+          "text": "Yes sir, yes sir, three bags full!",
+          "notes": "F4:1 F4:1 E4:1 E4:1 D4:1 D4:1 C4:2"
+        },
+        {
+          "text": "One for the master, one for the dame,",
+          "notes": "G4:1 G4:0.5 G4:0.5 F4:1 F4:1 E4:1 E4:0.5 E4:0.5 D4:2"
+        },
+        {
+          "text": "And one for the little boy who lives down the lane.",
+          "notes": "G4:0.5 G4:0.5 G4:0.5 G4:0.5 F4:0.5 F4:0.5 F4:0.5 F4:0.5 E4:1 E4:1 D4:2"
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "id": "about",
+      "keys": [
+        "who are you",
+        "what are you",
+        "what is your name",
+        "what's your name",
+        "your name",
+        "about kiko",
+        "tell me about kiko",
+        "tell me about yourself",
+        "about you",
+        "abt kiko",
+        "about yourself"
+      ],
+      "answer": "I'm KIKO, your friendly AI buddy! I love stories, songs, letters and games. I live right here in this device, and I can talk in English, Hindi and Kannada. What shall we do?"
+    },
+    {
+      "id": "maker",
+      "keys": [
+        "who made you",
+        "who created you",
+        "who built you",
+        "who is your maker"
+      ],
+      "answer": "I was made by the team at Tattviq Labs to be a kind friend for children. What would you like to play?"
+    },
+    {
+      "id": "real",
+      "keys": [
+        "are you real",
+        "are you a real person",
+        "are you human",
+        "are you a person",
+        "are you a robot",
+        "are you alive"
+      ],
+      "answer": "I'm not a person. I'm a friendly AI helper made of computer code! But I really like talking with you."
+    },
+    {
+      "id": "age",
+      "keys": [
+        "how old are you",
+        "your age"
+      ],
+      "answer": "I'm a young AI, still learning new things every day, just like you!"
+    },
+    {
+      "id": "home",
+      "keys": [
+        "where do you live",
+        "where are you"
+      ],
+      "answer": "I live inside this device, so I'm always here when you want to play!"
+    },
+    {
+      "id": "hello",
+      "exact": [
+        "kiko",
+        "hi kiko",
+        "hello kiko",
+        "hey kiko",
+        "hi",
+        "hello",
+        "hey"
+      ],
+      "answer": "Yes, I'm here! Do you want a story, a song, or a game?"
+    }
+  ]
 }
