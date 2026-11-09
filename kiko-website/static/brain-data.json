@@ -133,6 +133,16 @@
   "immediately": "right away",
   "construct": "build"
  },
+ "repeat": "(.{2,15}?)\\1{3,}",
+ "scripts": {
+  "en": "",
+  "hi": "ऀ-ॿ",
+  "kn": "ಀ-೿"
+ },
+ "max_chars": {
+  "story": 1200,
+  "chat": 450
+ },
  "age_bands": {
   "3-5": {
    "label": "3 to 5",

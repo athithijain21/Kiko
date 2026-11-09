@@ -467,10 +467,11 @@ const hasTapped = () => !navigator.userActivation || navigator.userActivation.ha
 }, {once: true, capture: true}));
 function strike(v){ strikes[v.name] = (strikes[v.name] || 0) + 1; if (strikes[v.name] >= 2) badVoices.add(v.name); }
 let sayToken = 0;                              // the newest say() wins; older ones stop quietly
-function say(text, {show = true} = {}){
+function say(text, {show = true, speech = null} = {}){
   if (show){ bubble.textContent = text; lastSaid = text; }
-  const lang = SPEECH[langOfText(text)];
-  const clean = text.replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}️‍]/gu, "").replace(/\b([AB])\)/g, "$1,");
+  const spoken = speech || text;                 // what KIKO says out loud can differ from what's shown
+  const lang = SPEECH[langOfText(spoken)];
+  const clean = spoken.replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}️‍]/gu, "").replace(/\b([AB])\)/g, "$1,");
   const my = ++sayToken;
   return new Promise(done => {
     let finished = false;
@@ -533,6 +534,8 @@ function noVoicesHint(lang){
   document.body.append(box);
   setTimeout(() => box.remove(), 15000);
 }
+// praise/oops may be plain text, or {text, speech} when the spoken words differ from the shown ones
+const sayAny = v => typeof v === "string" ? say(v) : say(v.text, {speech: v.speech});
 function hush(){ sayToken++; if ("speechSynthesis" in window) speechSynthesis.cancel(); if (kState === "talking") face("happy"); }
 
 let actx = null;
@@ -640,16 +643,16 @@ function quiz(body, {ask, items, render, isRight, praise, oops, again, small}){
       if (isRight(it)){
         b.classList.add("right"); row.querySelectorAll("button").forEach(x => x.disabled = x !== b);
         cheer(); if (!tried) addStar();
-        await say(praise(it)); if (live(id)) again();
+        await sayAny(praise(it)); if (live(id)) again();
       } else {
         tried = true; b.classList.remove("wrong"); void b.offsetWidth; b.classList.add("wrong"); chime(false);
-        say(oops(it));
+        sayAny(oops(it));
       }
     }}});
     render(b, it); row.append(b);
   }
   body.append(row);
-  say(ask.speak || ask.text);
+  say(ask.text, {speech: ask.speak || null});
 }
 
 /* ---------- Letters ---------- */
@@ -916,15 +919,17 @@ ACT.animals = () => {
     body.innerHTML = "";
     body.append(el("p", {class: "prompt"}, t("Tap an animal!")));
     const g = el("div", {class: "grid"});
-    A.forEach(a => g.append(el("button", {class: "tile emo", "aria-label": a.name, on: {click: () => say(t("The {a} says {s} {fact}", {a: lc(a.name), s: a.sound, fact: a.fact}))}}, a.e)));
+    A.forEach(a => g.append(el("button", {class: "tile emo", "aria-label": a.name, on: {click: () => say(t("The {a} says {s} {fact}", {a: lc(a.name), s: a.sound, fact: a.fact}),
+      {speech: t("The {a} says {s} {fact}", {a: lc(a.name), s: a.speak || a.sound, fact: a.fact})})}}, a.e)));
     body.append(g); say(t("Tap an animal to hear what it says!"));
   }
   function who(body){
     const tg = pick(A);
-    quiz(body, {ask: {text: t("Who says {s}", {s: tg.sound})}, items: options(tg, A, nOpts()),
+    const two = (key, a, extra = {}) => ({text: t(key, {a: lc(a.name), s: a.sound, ...extra}), speech: t(key, {a: lc(a.name), s: a.speak || a.sound, ...extra})});
+    quiz(body, {ask: {text: t("Who says {s}", {s: tg.sound}), speak: t("Who says {s}", {s: tg.speak || tg.sound})}, items: options(tg, A, nOpts()),
       render: (b, it) => { b.classList.add("emo"); b.textContent = it.e; b.setAttribute("aria-label", it.name); },
-      isRight: it => it === tg, praise: () => t("Yes! The {a} says {s}", {a: lc(tg.name), s: tg.sound}),
-      oops: it => t("The {a} says {s} Try again!", {a: lc(it.name), s: it.sound}), again: () => who(body)});
+      isRight: it => it === tg, praise: () => two("Yes! The {a} says {s}", tg),
+      oops: it => two("The {a} says {s} Try again!", it), again: () => who(body)});
   }
 };
 
@@ -1244,10 +1249,21 @@ holdButton($("#gearRing"), 1200, () => {
   $("#sLang").value = S.lang; $("#sAge").value = S.age; $("#sTime").value = String(S.minutes); $("#sRate").value = String(S.rate); $("#sHindi").value = S.hindi ? "1" : "0";
   $("#grownups").classList.add("open"); fillVoices();
   if (WEBSITE){
-    const k = KikoBrain.savedBrain();
-    $("#sServer").innerHTML = "";
-    $("#sServer").append(k ? `On this device: ${KikoBrain.MODELS[k].label} ${KikoBrain.isReady() ? "✓" : "(saved)"} ` : "Not downloaded yet (Talk shows the download button) ",
-      k ? el("button", {class: "pill soft", style: "padding:6px 12px;font-size:15px", on: {click: async () => { await KikoBrain.forget(); $("#sServer").textContent = "Removed from this device."; }}}, "Delete download") : "");
+    const k = KikoBrain.savedBrain(), box = $("#sServer");
+    box.innerHTML = ""; box.style.textAlign = "left";
+    const line = (...kids) => box.append(el("div", {style: "font-size:16px;margin:4px 0"}, ...kids));
+    line(k ? `🧠 ${KikoBrain.MODELS[k].label} (${KikoBrain.MODELS[k].size}) ${KikoBrain.isReady() ? "is awake ✓" : "is saved"}` : "🧠 Not downloaded yet. Talk shows the download button.");
+    line("📍 Stored inside this browser's private storage for this website, not in your Downloads folder. It stays until you delete it here or clear this site's data in the browser settings.");
+    const used = el("span", {}, "…"); line("💾 This website is using ", used, " on this device.");
+    if (navigator.storage && navigator.storage.estimate) navigator.storage.estimate().then(e => used.textContent = Math.round((e.usage || 0) / 1e6) + " MB").catch(() => used.textContent = "?");
+    const cores = Math.max(1, Math.floor((navigator.hardwareConcurrency || 2) / 2));
+    line(KikoBrain.multiThread() ? `⚡ Speed: using ${cores} processor core${cores > 1 ? "s" : ""}` : "🐢 Speed: 1 processor core (this browser doesn't allow more)");
+    if (KikoBrain.hasGPU()){
+      const cb = el("input", {type: "checkbox", id: "sGPU"}); cb.checked = KikoBrain.useGPU();
+      cb.onchange = () => { KikoBrain.setGPU(cb.checked); line(cb.checked ? "Graphics chip ON from the next time KIKO's brain loads. If replies look strange, turn it off." : "Graphics chip OFF."); };
+      line(cb, el("label", {for: "sGPU"}, " Use the graphics chip (faster on some computers, can give strange replies on others)"));
+    }
+    if (k) line(el("button", {class: "pill soft", style: "padding:6px 12px;font-size:15px", on: {click: async () => { await KikoBrain.forget(); box.textContent = "Removed from this device."; }}}, "🗑️ Delete the downloaded brain"));
   } else {
     fetch(BASE + "/hello?session_id=check").then(r => r.ok ? "Awake ✓ (laptop server)" : "Not answering").catch(() => "Sleeping: run python kiko_server.py")
       .then(tx => $("#sServer").textContent = tx);
@@ -1322,7 +1338,16 @@ applyStatic();
 home();
 loadContent().then(() => {
   applyStatic(); home();
-  if (WEBSITE && "serviceWorker" in navigator && window.isSecureContext) navigator.serviceWorker.register("sw.js").catch(() => {});
+  if (WEBSITE && "serviceWorker" in navigator && window.isSecureContext){
+    navigator.serviceWorker.register("sw.js").then(() => navigator.serviceWorker.ready).then(() => {
+      // The first visit isn't sped up yet: reload once so the helper's speed settings apply.
+      let tried = false; try{ tried = sessionStorage.getItem("kiko_isolation_reload") === "1"; }catch(e){}
+      if (!window.crossOriginIsolated && !tried){
+        try{ sessionStorage.setItem("kiko_isolation_reload", "1"); }catch(e){}
+        location.reload();
+      }
+    }).catch(() => {});
+  }
 })
   .catch(() => { const n = main.querySelector(".note"); if (n) n.textContent = "I can't find my games. Grown-up: run python kiko_server.py, then refresh."; face("sleepy"); });
 </script>

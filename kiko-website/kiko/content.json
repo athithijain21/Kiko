@@ -1,76 +1,499 @@
 {
-  "_about": "KIKO's curated learning content. Facts here are checked by people, so KIKO never invents them. Add items freely: the Playroom and the server read this file on start.",
-
+  "_about": "KIKO's curated learning content. Facts here are checked by people, so KIKO never invents them. Add items freely: the Playroom and the server read this file on start. Animals may have a \"speak\" field: how KIKO says the sound out loud when the written sound isn't easy to read (like \"Grrr!\").",
   "letters": [
-    {"l": "A", "word": "Apple", "e": "🍎"}, {"l": "B", "word": "Butterfly", "e": "🦋"},
-    {"l": "C", "word": "Cat", "e": "🐱"}, {"l": "D", "word": "Dog", "e": "🐶"},
-    {"l": "E", "word": "Elephant", "e": "🐘"}, {"l": "F", "word": "Fish", "e": "🐟"},
-    {"l": "G", "word": "Grapes", "e": "🍇"}, {"l": "H", "word": "Hen", "e": "🐔"},
-    {"l": "I", "word": "Ice cream", "e": "🍦"}, {"l": "J", "word": "Juice", "e": "🧃"},
-    {"l": "K", "word": "Kite", "e": "🪁"}, {"l": "L", "word": "Lion", "e": "🦁"},
-    {"l": "M", "word": "Mango", "e": "🥭"}, {"l": "N", "word": "Nest", "e": "🪺"},
-    {"l": "O", "word": "Octopus", "e": "🐙"}, {"l": "P", "word": "Parrot", "e": "🦜"},
-    {"l": "Q", "word": "Queen", "e": "👸"}, {"l": "R", "word": "Rabbit", "e": "🐰"},
-    {"l": "S", "word": "Sun", "e": "☀️"}, {"l": "T", "word": "Tiger", "e": "🐯"},
-    {"l": "U", "word": "Umbrella", "e": "☂️"}, {"l": "V", "word": "Van", "e": "🚐"},
-    {"l": "W", "word": "Watermelon", "e": "🍉"}, {"l": "X", "word": "X-ray", "e": "🩻"},
-    {"l": "Y", "word": "Yo-yo", "e": "🪀"}, {"l": "Z", "word": "Zebra", "e": "🦓"}
+    {
+      "l": "A",
+      "word": "Apple",
+      "e": "🍎"
+    },
+    {
+      "l": "B",
+      "word": "Butterfly",
+      "e": "🦋"
+    },
+    {
+      "l": "C",
+      "word": "Cat",
+      "e": "🐱"
+    },
+    {
+      "l": "D",
+      "word": "Dog",
+      "e": "🐶"
+    },
+    {
+      "l": "E",
+      "word": "Elephant",
+      "e": "🐘"
+    },
+    {
+      "l": "F",
+      "word": "Fish",
+      "e": "🐟"
+    },
+    {
+      "l": "G",
+      "word": "Grapes",
+      "e": "🍇"
+    },
+    {
+      "l": "H",
+      "word": "Hen",
+      "e": "🐔"
+    },
+    {
+      "l": "I",
+      "word": "Ice cream",
+      "e": "🍦"
+    },
+    {
+      "l": "J",
+      "word": "Juice",
+      "e": "🧃"
+    },
+    {
+      "l": "K",
+      "word": "Kite",
+      "e": "🪁"
+    },
+    {
+      "l": "L",
+      "word": "Lion",
+      "e": "🦁"
+    },
+    {
+      "l": "M",
+      "word": "Mango",
+      "e": "🥭"
+    },
+    {
+      "l": "N",
+      "word": "Nest",
+      "e": "🪺"
+    },
+    {
+      "l": "O",
+      "word": "Octopus",
+      "e": "🐙"
+    },
+    {
+      "l": "P",
+      "word": "Parrot",
+      "e": "🦜"
+    },
+    {
+      "l": "Q",
+      "word": "Queen",
+      "e": "👸"
+    },
+    {
+      "l": "R",
+      "word": "Rabbit",
+      "e": "🐰"
+    },
+    {
+      "l": "S",
+      "word": "Sun",
+      "e": "☀️"
+    },
+    {
+      "l": "T",
+      "word": "Tiger",
+      "e": "🐯"
+    },
+    {
+      "l": "U",
+      "word": "Umbrella",
+      "e": "☂️"
+    },
+    {
+      "l": "V",
+      "word": "Van",
+      "e": "🚐"
+    },
+    {
+      "l": "W",
+      "word": "Watermelon",
+      "e": "🍉"
+    },
+    {
+      "l": "X",
+      "word": "X-ray",
+      "e": "🩻"
+    },
+    {
+      "l": "Y",
+      "word": "Yo-yo",
+      "e": "🪀"
+    },
+    {
+      "l": "Z",
+      "word": "Zebra",
+      "e": "🦓"
+    }
   ],
-
   "words": [
-    {"w": "cat", "e": "🐱"}, {"w": "dog", "e": "🐶"}, {"w": "sun", "e": "☀️"}, {"w": "hat", "e": "🎩"},
-    {"w": "bus", "e": "🚌"}, {"w": "cup", "e": "☕"}, {"w": "pig", "e": "🐷"}, {"w": "bed", "e": "🛏️"},
-    {"w": "fox", "e": "🦊"}, {"w": "box", "e": "📦"}, {"w": "egg", "e": "🥚"}, {"w": "ant", "e": "🐜"},
-    {"w": "cow", "e": "🐄"}, {"w": "hen", "e": "🐔"}, {"w": "key", "e": "🔑"}, {"w": "car", "e": "🚗"},
-    {"w": "owl", "e": "🦉"}, {"w": "bee", "e": "🐝"},
-    {"w": "star", "e": "⭐"}, {"w": "fish", "e": "🐟"}, {"w": "frog", "e": "🐸"}, {"w": "cake", "e": "🎂"},
-    {"w": "ball", "e": "⚽"}, {"w": "tree", "e": "🌳"}, {"w": "moon", "e": "🌙"}, {"w": "ship", "e": "🚢"},
-    {"w": "duck", "e": "🦆"}, {"w": "milk", "e": "🥛"}, {"w": "kite", "e": "🪁"}, {"w": "lion", "e": "🦁"},
-    {"w": "train", "e": "🚂"}, {"w": "apple", "e": "🍎"}, {"w": "house", "e": "🏠"}, {"w": "mango", "e": "🥭"}
+    {
+      "w": "cat",
+      "e": "🐱"
+    },
+    {
+      "w": "dog",
+      "e": "🐶"
+    },
+    {
+      "w": "sun",
+      "e": "☀️"
+    },
+    {
+      "w": "hat",
+      "e": "🎩"
+    },
+    {
+      "w": "bus",
+      "e": "🚌"
+    },
+    {
+      "w": "cup",
+      "e": "☕"
+    },
+    {
+      "w": "pig",
+      "e": "🐷"
+    },
+    {
+      "w": "bed",
+      "e": "🛏️"
+    },
+    {
+      "w": "fox",
+      "e": "🦊"
+    },
+    {
+      "w": "box",
+      "e": "📦"
+    },
+    {
+      "w": "egg",
+      "e": "🥚"
+    },
+    {
+      "w": "ant",
+      "e": "🐜"
+    },
+    {
+      "w": "cow",
+      "e": "🐄"
+    },
+    {
+      "w": "hen",
+      "e": "🐔"
+    },
+    {
+      "w": "key",
+      "e": "🔑"
+    },
+    {
+      "w": "car",
+      "e": "🚗"
+    },
+    {
+      "w": "owl",
+      "e": "🦉"
+    },
+    {
+      "w": "bee",
+      "e": "🐝"
+    },
+    {
+      "w": "star",
+      "e": "⭐"
+    },
+    {
+      "w": "fish",
+      "e": "🐟"
+    },
+    {
+      "w": "frog",
+      "e": "🐸"
+    },
+    {
+      "w": "cake",
+      "e": "🎂"
+    },
+    {
+      "w": "ball",
+      "e": "⚽"
+    },
+    {
+      "w": "tree",
+      "e": "🌳"
+    },
+    {
+      "w": "moon",
+      "e": "🌙"
+    },
+    {
+      "w": "ship",
+      "e": "🚢"
+    },
+    {
+      "w": "duck",
+      "e": "🦆"
+    },
+    {
+      "w": "milk",
+      "e": "🥛"
+    },
+    {
+      "w": "kite",
+      "e": "🪁"
+    },
+    {
+      "w": "lion",
+      "e": "🦁"
+    },
+    {
+      "w": "train",
+      "e": "🚂"
+    },
+    {
+      "w": "apple",
+      "e": "🍎"
+    },
+    {
+      "w": "house",
+      "e": "🏠"
+    },
+    {
+      "w": "mango",
+      "e": "🥭"
+    }
   ],
-
   "fruits": [
-    {"name": "Apple", "e": "🍎", "hi": "Seb", "color": "red", "fact": "Apples can be red, green or yellow."},
-    {"name": "Banana", "e": "🍌", "hi": "Kela", "color": "yellow", "fact": "Bananas grow in big bunches."},
-    {"name": "Mango", "e": "🥭", "hi": "Aam", "color": "yellow", "fact": "Mango is the national fruit of India."},
-    {"name": "Orange", "e": "🍊", "hi": "Santra", "color": "orange", "fact": "An orange has juicy pieces inside."},
-    {"name": "Grapes", "e": "🍇", "hi": "Angoor", "color": "purple", "fact": "Grapes grow in bunches on a vine."},
-    {"name": "Watermelon", "e": "🍉", "hi": "Tarbooz", "color": "green", "fact": "A watermelon is green outside and red inside."},
-    {"name": "Pineapple", "e": "🍍", "hi": "Ananas", "color": "yellow", "fact": "A pineapple has spiky leaves on top."},
-    {"name": "Strawberry", "e": "🍓", "hi": "Strawberry", "color": "red", "fact": "Strawberries have tiny seeds on the outside."},
-    {"name": "Cherry", "e": "🍒", "hi": "Cherry", "color": "red", "fact": "Cherries often grow in pairs."},
-    {"name": "Lemon", "e": "🍋", "hi": "Nimbu", "color": "yellow", "fact": "Lemons taste very sour!"},
-    {"name": "Pear", "e": "🍐", "hi": "Nashpati", "color": "green", "fact": "A pear is round at the bottom and thin at the top."},
-    {"name": "Peach", "e": "🍑", "hi": "Aadoo", "color": "pink", "fact": "A peach has soft, fuzzy skin."},
-    {"name": "Coconut", "e": "🥥", "hi": "Nariyal", "color": "brown", "fact": "A coconut has sweet water inside."},
-    {"name": "Kiwi", "e": "🥝", "hi": "Kiwi", "color": "green", "fact": "A kiwi is brown outside and green inside."},
-    {"name": "Blueberries", "e": "🫐", "hi": "Blueberry", "color": "blue", "fact": "Blueberries are small and round."},
-    {"name": "Muskmelon", "e": "🍈", "hi": "Kharbooja", "color": "green", "fact": "A muskmelon is sweet and smells nice."},
-    {"name": "Tomato", "e": "🍅", "hi": "Tamatar", "color": "red", "fact": "A tomato is really a fruit!"}
+    {
+      "name": "Apple",
+      "e": "🍎",
+      "hi": "Seb",
+      "color": "red",
+      "fact": "Apples can be red, green or yellow."
+    },
+    {
+      "name": "Banana",
+      "e": "🍌",
+      "hi": "Kela",
+      "color": "yellow",
+      "fact": "Bananas grow in big bunches."
+    },
+    {
+      "name": "Mango",
+      "e": "🥭",
+      "hi": "Aam",
+      "color": "yellow",
+      "fact": "Mango is the national fruit of India."
+    },
+    {
+      "name": "Orange",
+      "e": "🍊",
+      "hi": "Santra",
+      "color": "orange",
+      "fact": "An orange has juicy pieces inside."
+    },
+    {
+      "name": "Grapes",
+      "e": "🍇",
+      "hi": "Angoor",
+      "color": "purple",
+      "fact": "Grapes grow in bunches on a vine."
+    },
+    {
+      "name": "Watermelon",
+      "e": "🍉",
+      "hi": "Tarbooz",
+      "color": "green",
+      "fact": "A watermelon is green outside and red inside."
+    },
+    {
+      "name": "Pineapple",
+      "e": "🍍",
+      "hi": "Ananas",
+      "color": "yellow",
+      "fact": "A pineapple has spiky leaves on top."
+    },
+    {
+      "name": "Strawberry",
+      "e": "🍓",
+      "hi": "Strawberry",
+      "color": "red",
+      "fact": "Strawberries have tiny seeds on the outside."
+    },
+    {
+      "name": "Cherry",
+      "e": "🍒",
+      "hi": "Cherry",
+      "color": "red",
+      "fact": "Cherries often grow in pairs."
+    },
+    {
+      "name": "Lemon",
+      "e": "🍋",
+      "hi": "Nimbu",
+      "color": "yellow",
+      "fact": "Lemons taste very sour!"
+    },
+    {
+      "name": "Pear",
+      "e": "🍐",
+      "hi": "Nashpati",
+      "color": "green",
+      "fact": "A pear is round at the bottom and thin at the top."
+    },
+    {
+      "name": "Peach",
+      "e": "🍑",
+      "hi": "Aadoo",
+      "color": "pink",
+      "fact": "A peach has soft, fuzzy skin."
+    },
+    {
+      "name": "Coconut",
+      "e": "🥥",
+      "hi": "Nariyal",
+      "color": "brown",
+      "fact": "A coconut has sweet water inside."
+    },
+    {
+      "name": "Kiwi",
+      "e": "🥝",
+      "hi": "Kiwi",
+      "color": "green",
+      "fact": "A kiwi is brown outside and green inside."
+    },
+    {
+      "name": "Blueberries",
+      "e": "🫐",
+      "hi": "Blueberry",
+      "color": "blue",
+      "fact": "Blueberries are small and round."
+    },
+    {
+      "name": "Muskmelon",
+      "e": "🍈",
+      "hi": "Kharbooja",
+      "color": "green",
+      "fact": "A muskmelon is sweet and smells nice."
+    },
+    {
+      "name": "Tomato",
+      "e": "🍅",
+      "hi": "Tamatar",
+      "color": "red",
+      "fact": "A tomato is really a fruit!"
+    }
   ],
-
   "animals": [
-    {"name": "Cow", "e": "🐄", "sound": "Moo!", "fact": "Cows give us milk."},
-    {"name": "Dog", "e": "🐶", "sound": "Woof woof!", "fact": "Dogs wag their tails when they are happy."},
-    {"name": "Cat", "e": "🐱", "sound": "Meow!", "fact": "Cats can see well when it is dark."},
-    {"name": "Lion", "e": "🦁", "sound": "Roar!", "fact": "A lion family is called a pride."},
-    {"name": "Elephant", "e": "🐘", "sound": "Pawoo!", "fact": "Elephants use their trunk to drink water."},
-    {"name": "Duck", "e": "🦆", "sound": "Quack quack!", "fact": "Ducks love to swim."},
-    {"name": "Hen", "e": "🐔", "sound": "Cluck cluck!", "fact": "Hens lay eggs."},
-    {"name": "Sheep", "e": "🐑", "sound": "Baa baa!", "fact": "Sheep have soft, woolly coats."},
-    {"name": "Horse", "e": "🐴", "sound": "Neigh!", "fact": "Horses can sleep standing up."},
-    {"name": "Frog", "e": "🐸", "sound": "Ribbit!", "fact": "Frogs can jump very far."},
-    {"name": "Owl", "e": "🦉", "sound": "Hoot hoot!", "fact": "Owls are awake at night."},
-    {"name": "Peacock", "e": "🦚", "sound": "May-awe!", "fact": "The peacock is the national bird of India."},
-    {"name": "Monkey", "e": "🐒", "sound": "Ooh ooh aah aah!", "fact": "Monkeys love to climb trees."},
-    {"name": "Bee", "e": "🐝", "sound": "Buzz buzz!", "fact": "Bees make honey."},
-    {"name": "Tiger", "e": "🐯", "sound": "Grrr!", "fact": "The tiger is the national animal of India."}
+    {
+      "name": "Cow",
+      "e": "🐄",
+      "sound": "Moo!",
+      "fact": "Cows give us milk."
+    },
+    {
+      "name": "Dog",
+      "e": "🐶",
+      "sound": "Woof woof!",
+      "fact": "Dogs wag their tails when they are happy."
+    },
+    {
+      "name": "Cat",
+      "e": "🐱",
+      "sound": "Meow!",
+      "fact": "Cats can see well when it is dark."
+    },
+    {
+      "name": "Lion",
+      "e": "🦁",
+      "sound": "Roar!",
+      "fact": "A lion family is called a pride."
+    },
+    {
+      "name": "Elephant",
+      "e": "🐘",
+      "sound": "Pawoo!",
+      "fact": "Elephants use their trunk to drink water."
+    },
+    {
+      "name": "Duck",
+      "e": "🦆",
+      "sound": "Quack quack!",
+      "fact": "Ducks love to swim."
+    },
+    {
+      "name": "Hen",
+      "e": "🐔",
+      "sound": "Cluck cluck!",
+      "fact": "Hens lay eggs."
+    },
+    {
+      "name": "Sheep",
+      "e": "🐑",
+      "sound": "Baa baa!",
+      "fact": "Sheep have soft, woolly coats."
+    },
+    {
+      "name": "Horse",
+      "e": "🐴",
+      "sound": "Neigh!",
+      "fact": "Horses can sleep standing up."
+    },
+    {
+      "name": "Frog",
+      "e": "🐸",
+      "sound": "Ribbit!",
+      "fact": "Frogs can jump very far."
+    },
+    {
+      "name": "Owl",
+      "e": "🦉",
+      "sound": "Hoot hoot!",
+      "fact": "Owls are awake at night."
+    },
+    {
+      "name": "Peacock",
+      "e": "🦚",
+      "sound": "May-awe!",
+      "fact": "The peacock is the national bird of India."
+    },
+    {
+      "name": "Monkey",
+      "e": "🐒",
+      "sound": "Ooh ooh aah aah!",
+      "fact": "Monkeys love to climb trees."
+    },
+    {
+      "name": "Bee",
+      "e": "🐝",
+      "sound": "Buzz buzz!",
+      "fact": "Bees make honey."
+    },
+    {
+      "name": "Tiger",
+      "e": "🐯",
+      "sound": "Grrr!",
+      "fact": "The tiger is the national animal of India.",
+      "speak": "Rrraaah!"
+    }
   ],
-
   "stories": [
     {
-      "id": "thirsty-crow", "title": "The Thirsty Crow", "e": "🏺", "from": "Folk tale",
-      "keywords": ["thirsty crow", "crow"],
+      "id": "thirsty-crow",
+      "title": "The Thirsty Crow",
+      "e": "🏺",
+      "from": "Folk tale",
+      "keywords": [
+        "thirsty crow",
+        "crow"
+      ],
       "lines": [
         "It was a hot, hot day.",
         "A crow was very thirsty.",
@@ -85,8 +508,15 @@
       "lesson": "When we think, we can solve a problem."
     },
     {
-      "id": "monkey-crocodile", "title": "The Monkey and the Crocodile", "e": "🐒", "from": "Panchatantra",
-      "keywords": ["monkey and the crocodile", "crocodile", "panchatantra"],
+      "id": "monkey-crocodile",
+      "title": "The Monkey and the Crocodile",
+      "e": "🐒",
+      "from": "Panchatantra",
+      "keywords": [
+        "monkey and the crocodile",
+        "crocodile",
+        "panchatantra"
+      ],
       "lines": [
         "A monkey lived in a jamun tree by the river.",
         "He shared sweet jamun fruits with his friend, the crocodile.",
@@ -101,8 +531,15 @@
       "lesson": "Stay calm and think, even when you feel scared."
     },
     {
-      "id": "lion-mouse", "title": "The Lion and the Mouse", "e": "🦁", "from": "Aesop's fable",
-      "keywords": ["lion and the mouse", "lion", "mouse"],
+      "id": "lion-mouse",
+      "title": "The Lion and the Mouse",
+      "e": "🦁",
+      "from": "Aesop's fable",
+      "keywords": [
+        "lion and the mouse",
+        "lion",
+        "mouse"
+      ],
       "lines": [
         "A big lion was sleeping under a tree.",
         "A tiny mouse ran over his nose. The lion woke up!",
@@ -117,8 +554,14 @@
       "lesson": "Even a small friend can be a big help."
     },
     {
-      "id": "tenali-thieves", "title": "Tenali Raman and the Thieves", "e": "🪣", "from": "Tenali Raman tale",
-      "keywords": ["tenali", "raman"],
+      "id": "tenali-thieves",
+      "title": "Tenali Raman and the Thieves",
+      "e": "🪣",
+      "from": "Tenali Raman tale",
+      "keywords": [
+        "tenali",
+        "raman"
+      ],
       "lines": [
         "Tenali Raman was a clever man in the king's court.",
         "One night, he saw thieves hiding near his house.",
@@ -133,8 +576,14 @@
       "lesson": "A clever idea can fix a problem without any fighting."
     },
     {
-      "id": "birbal-crows", "title": "Birbal Counts the Crows", "e": "🐦", "from": "Akbar and Birbal tale",
-      "keywords": ["birbal", "akbar"],
+      "id": "birbal-crows",
+      "title": "Birbal Counts the Crows",
+      "e": "🐦",
+      "from": "Akbar and Birbal tale",
+      "keywords": [
+        "birbal",
+        "akbar"
+      ],
       "lines": [
         "One day, King Akbar asked a tricky question.",
         "\"Birbal, how many crows are there in our city?\"",
@@ -149,8 +598,16 @@
       "lesson": "A happy, quick mind can answer tricky questions."
     },
     {
-      "id": "hare-tortoise", "title": "The Hare and the Tortoise", "e": "🐢", "from": "Aesop's fable",
-      "keywords": ["hare", "tortoise", "rabbit and the tortoise", "race"],
+      "id": "hare-tortoise",
+      "title": "The Hare and the Tortoise",
+      "e": "🐢",
+      "from": "Aesop's fable",
+      "keywords": [
+        "hare",
+        "tortoise",
+        "rabbit and the tortoise",
+        "race"
+      ],
       "lines": [
         "A hare liked to boast. \"I am the fastest!\" he said.",
         "A slow tortoise said, \"Let's have a race.\"",
@@ -165,8 +622,15 @@
       "lesson": "Slow and steady wins the race."
     },
     {
-      "id": "ant-dove", "title": "The Ant and the Dove", "e": "🕊️", "from": "Aesop's fable",
-      "keywords": ["ant and the dove", "dove", "ant"],
+      "id": "ant-dove",
+      "title": "The Ant and the Dove",
+      "e": "🕊️",
+      "from": "Aesop's fable",
+      "keywords": [
+        "ant and the dove",
+        "dove",
+        "ant"
+      ],
       "lines": [
         "A little ant went to the river for a drink.",
         "Oops! She fell into the water.",
@@ -181,8 +645,16 @@
       "lesson": "When you are kind, kindness comes back to you."
     },
     {
-      "id": "shy-star", "title": "The Little Shy Star", "e": "⭐", "from": "Bedtime story",
-      "keywords": ["bedtime", "sleep", "night", "star"],
+      "id": "shy-star",
+      "title": "The Little Shy Star",
+      "e": "⭐",
+      "from": "Bedtime story",
+      "keywords": [
+        "bedtime",
+        "sleep",
+        "night",
+        "star"
+      ],
       "lines": [
         "High in the night sky lived a little star named Tara.",
         "Tara was shy. She hid behind a soft cloud.",
@@ -197,15 +669,28 @@
       "lesson": "A little bit of brave can make someone happy."
     }
   ],
-
   "feelings": {
-    "happy":  {"e": "😊", "say": "Yay! I love that you feel happy. What made you smile today?"},
-    "sad":    {"e": "😢", "say": "It's okay to feel sad. Let's take a slow breath together. A hug from a grown-up you love can help too."},
-    "angry":  {"e": "😠", "say": "Angry feelings are big. Let's squeeze our hands tight, then let go. Breathe out slowly, like blowing a candle."},
-    "scared": {"e": "😨", "say": "You are safe with me. Tell a grown-up you trust what scared you. They can help."},
-    "tired":  {"e": "🥱", "say": "Your body wants some rest. A cozy story and a little sleep will help."}
+    "happy": {
+      "e": "😊",
+      "say": "Yay! I love that you feel happy. What made you smile today?"
+    },
+    "sad": {
+      "e": "😢",
+      "say": "It's okay to feel sad. Let's take a slow breath together. A hug from a grown-up you love can help too."
+    },
+    "angry": {
+      "e": "😠",
+      "say": "Angry feelings are big. Let's squeeze our hands tight, then let go. Breathe out slowly, like blowing a candle."
+    },
+    "scared": {
+      "e": "😨",
+      "say": "You are safe with me. Tell a grown-up you trust what scared you. They can help."
+    },
+    "tired": {
+      "e": "🥱",
+      "say": "Your body wants some rest. A cozy story and a little sleep will help."
+    }
   },
-
   "play_ideas": [
     "Let's play I Spy! Look around and find something red.",
     "Build the tallest tower you can with blocks or cups.",
@@ -214,12 +699,20 @@
     "Make a paper boat with a grown-up and float it in a tub of water.",
     "Hop like a frog five times, then stretch like a tall tree."
   ],
-
   "cards": {
     "_about": "RFID tag ID -> what it opens. USB RFID readers type the ID and press Enter. Tap an unknown card in the Playroom to see its ID, then add it here.",
-    "0000000001": {"open": "letters"},
-    "0000000002": {"open": "fruits"},
-    "0000000003": {"open": "story", "story": "lion-mouse"},
-    "0000000004": {"open": "calm"}
+    "0000000001": {
+      "open": "letters"
+    },
+    "0000000002": {
+      "open": "fruits"
+    },
+    "0000000003": {
+      "open": "story",
+      "story": "lion-mouse"
+    },
+    "0000000004": {
+      "open": "calm"
+    }
   }
 }

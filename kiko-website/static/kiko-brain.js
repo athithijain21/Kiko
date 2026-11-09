@@ -34,7 +34,7 @@
   let wllama = null;       // the in-browser llama.cpp
   let loadedKey = null;
   let history = [];
-  const HISTORY_TURNS = 4;
+  const HISTORY_TURNS = 3;          // shorter memory = less to read before each reply = faster
   const store = {
     get(k, d) { try { const v = localStorage.getItem("kiko_" + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem("kiko_" + k, JSON.stringify(v)); } catch (e) {} },
@@ -50,6 +50,7 @@
       outBlock: rx(D.output_block), outGroom: rx(D.output_grooming), outIndic: rx(D.output_block_indic),
       filler: rx(D.filler), vague: rx(D.vague_q), lesson: rx(D.lesson),
       swap: new RegExp("\\b(" + Object.keys(D.word_swaps).join("|") + ")\\b", "gi"),
+      repeat: new RegExp(D.repeat, "s"),
     };
   }
 
@@ -113,6 +114,22 @@
     return keep.join(" ");
   }
 
+  function looksBroken(text, lang) {
+    if (!text) return false;
+    if (R.repeat.test(text)) return true;
+    const letters = [...text].filter(c => /\p{L}/u.test(c));      // same as Python's str.isalpha()
+    if (letters.length < 8) return false;
+    const allowed = new RegExp("[A-Za-z" + (D.scripts[lang] || "") + "]");
+    return letters.filter(c => !allowed.test(c)).length / letters.length > 0.15;
+  }
+  function capLength(text, mode) {
+    const limit = D.max_chars[["story", "culture", "interactive_story"].includes(mode) ? "story" : "chat"];
+    if (text.length <= limit) return text;
+    const cut = text.slice(0, limit);
+    const end = Math.max(cut.lastIndexOf("."), cut.lastIndexOf("!"), cut.lastIndexOf("?"), cut.lastIndexOf("।"));
+    return (end > Math.floor(limit / 3) ? cut.slice(0, end + 1) : cut).trim();
+  }
+
   function readability(text) {
     const sents = text.split(/[.!?]+/).filter(s => s.trim());
     const words = text.match(/[A-Za-z']+/g) || [];
@@ -170,6 +187,7 @@
   // Absolute address of the website folder (works on GitHub Pages sub-folders like /kiko/).
   const siteRoot = base => new URL(base || "./", document.baseURI).href;
   const hasGPU = () => typeof navigator !== "undefined" && !!navigator.gpu;
+  const useGPU = () => hasGPU() && store.get("use_gpu", false) === true;
   function recommended() {
     const mem = navigator.deviceMemory || 4;
     const phone = /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent);
@@ -186,20 +204,37 @@
     const opts = {n_ctx: 2048, useCache: true, reasoning: false, default_template_kwargs: {enable_thinking: false},
                   progressCallback: ({loaded, total}) => onProgress && total && onProgress(Math.round(loaded / total * 100))};
     try {
-      await wllama.loadModelFromUrl(url, Object.assign({n_gpu_layers: hasGPU() ? 99 : 0}, opts));
+      // The graphics-chip path (WebGPU) is experimental in browsers and can produce nonsense on some
+      // computers, so KIKO uses the processor unless a grown-up switches the graphics chip on.
+      await wllama.loadModelFromUrl(url, Object.assign({n_gpu_layers: useGPU() ? 99 : 0}, opts));
     } catch (e) {
-      if (!hasGPU()) throw e;
+      if (!useGPU()) throw e;
       wllama = new mod.Wllama({default: root + "static/wllama/wasm/wllama.wasm"}, {suppressNativeLog: true, allowOffline: true});
       await wllama.loadModelFromUrl(url, Object.assign({n_gpu_layers: 0}, opts));    // graphics chip failed: use the CPU
     }
     loadedKey = key; store.set("brain", key);
+    // ask the browser to keep the brain even when the device is low on space
+    try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
   }
-  async function generate(messages, maxTok, temp) {
-    const r = await wllama.createChatCompletion({
-      messages, max_tokens: maxTok, temperature: temp, temp, top_p: 0.9, penalty_repeat: 1.1,
-      chat_template_kwargs: {enable_thinking: false},
-    });
-    return (r.choices[0].message.content || "");
+  async function generate(messages, maxTok, temp, lang) {
+    let text = "", pieces = 0;
+    const stop = new AbortController();
+    try {
+      await wllama.createChatCompletion({
+        messages, max_tokens: maxTok, temperature: temp, temp, top_p: 0.9, top_k: 40, min_p: 0.05,
+        penalty_repeat: 1.15, penalty_last_n: 64, cache_prompt: true,
+        chat_template_kwargs: {enable_thinking: false}, abortSignal: stop.signal, stream: true,
+        onData: chunk => {
+          const d = chunk && chunk.choices && chunk.choices[0] && chunk.choices[0].delta;
+          if (d && d.content){ text += d.content; pieces++; }
+          // stop as soon as it loops / changes alphabet, or once it has said enough
+          if ((pieces % 8 === 0 && looksBroken(text, lang)) || pieces > maxTok + 8 || text.length > 1600) stop.abort();
+        },
+      });
+    } catch (e) {
+      if (!(e && (e.name === "AbortError" || /abort/i.test(String(e))))) throw e;
+    }
+    return text;
   }
   async function forget() {
     try {
@@ -222,8 +257,10 @@
             {role: "user", content: note ? `${text}\n\n(${note})` : text}];
   }
   async function ask(text, o, note) {
-    const raw = await generate(messagesFor(text, o.mode, o.age, o.lang, note), maxTokens(o.age, o.mode), temperature(o.mode));
-    return simplify(cleanOutput(raw), maxSentences(o.age, o.mode), o.mode);
+    const raw = await generate(messagesFor(text, o.mode, o.age, o.lang, note), maxTokens(o.age, o.mode), temperature(o.mode), o.lang);
+    const cleaned = cleanOutput(raw);
+    if (looksBroken(cleaned, o.lang)) return "";                    // stuck / nonsense: treat as no answer
+    return capLength(simplify(cleaned, maxSentences(o.age, o.mode), o.mode), o.mode);
   }
   // o = {mode, age, lang, content, contentEn}
   async function reply(text, o) {
@@ -257,6 +294,8 @@
     savedBrain: () => store.get("brain", null),
     fallbackText: lang => (D ? fallback(lang) : "Hmm, let me think of something better!"),
     // exposed for tests
-    _t: {checkInput, checkOutput, cleanOutput, simplify, sentences, matchStory, storyText, systemPrompt, fewShot, maxTokens, maxSentences, readability},
+    hasGPU, useGPU, setGPU: on => store.set("use_gpu", !!on),
+    multiThread: () => typeof crossOriginIsolated !== "undefined" && crossOriginIsolated,
+    _t: {checkInput, checkOutput, cleanOutput, simplify, sentences, matchStory, storyText, systemPrompt, fewShot, maxTokens, maxSentences, readability, looksBroken, capLength},
   };
 })();
