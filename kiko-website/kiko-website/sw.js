@@ -1,7 +1,7 @@
 /* KIKO offline helper (service worker).
    Keeps the Playroom's own files on the device, so KIKO opens even without internet
    after the first visit. KIKO's brain (the model) is stored separately by the AI runtime. */
-const CACHE = "kiko-20261109102951";
+const CACHE = "kiko-20261109105318";
 const CORE = [
   "./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png",
   "static/kiko-brain.js", "static/kiko-facts.js", "static/brain-data.json",
@@ -32,15 +32,21 @@ function isolate(r){
   return new Response(r.body, {status: r.status, statusText: r.statusText, headers: h});
 }
 
-// Our own files: show the saved copy straight away, and quietly refresh it when online.
-// Other sites (like the model download from Hugging Face) pass straight through.
+// The page, its code and its data come fresh from the internet when online, so a new version shows at once
+// (with a 4-second limit, then the saved copy). Fonts and the AI runtime use the saved copy first (they rarely change).
+// Other sites (the brain download, Wikidata) pass straight through.
+const FRESH = /(\/|\.html|\.js|\.json|\.webmanifest)$/;
 self.addEventListener("fetch", e => {
   const url = new URL(e.request.url);
   if (e.request.method !== "GET" || url.origin !== self.location.origin) return;
   if (e.request.cache === "only-if-cached" && e.request.mode !== "same-origin") return;
+  const fresh = FRESH.test(url.pathname) && !url.pathname.includes("/wllama/");
   e.respondWith(caches.open(CACHE).then(async c => {
     const saved = await c.match(e.request, {ignoreSearch: true});
-    const fresh = fetch(e.request).then(r => { if (r.ok) c.put(e.request, r.clone()); return r; }).catch(() => saved);
-    return isolate(saved || await fresh);
+    const net = fetch(e.request, fresh ? {cache: "no-cache"} : {}).then(r => { if (r.ok) c.put(e.request, r.clone()); return r; });
+    if (!fresh) return isolate(saved || await net.catch(() => saved));
+    const timeout = new Promise(r => setTimeout(() => r(null), 4000));
+    const r = await Promise.race([net.catch(() => null), timeout]);
+    return isolate(r || saved || await net.catch(() => saved));
   }));
 });

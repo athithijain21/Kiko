@@ -854,6 +854,354 @@
           "notes": "G4:0.5 G4:0.5 G4:0.5 G4:0.5 F4:0.5 F4:0.5 F4:0.5 F4:0.5 E4:1 E4:1 D4:2"
         }
       ]
+    },
+    {
+      "id": "mary-lamb",
+      "title": "Mary Had a Little Lamb",
+      "e": "🐑",
+      "tempo": 112,
+      "keywords": [
+        "mary",
+        "lamb"
+      ],
+      "lines": [
+        {
+          "text": "Mary had a little lamb,",
+          "notes": "E4:1 D4:1 C4:1 D4:1 E4:1 E4:1 E4:2"
+        },
+        {
+          "text": "Little lamb, little lamb,",
+          "notes": "D4:1 D4:1 D4:2 E4:1 G4:1 G4:2"
+        },
+        {
+          "text": "Mary had a little lamb, its fleece was white as snow.",
+          "notes": "E4:1 D4:1 C4:1 D4:1 E4:1 E4:1 E4:1 E4:1 D4:1 D4:1 E4:1 D4:1 C4:4"
+        },
+        {
+          "text": "Everywhere that Mary went,",
+          "notes": "E4:1 D4:1 C4:1 D4:1 E4:1 E4:1 E4:2"
+        },
+        {
+          "text": "Mary went, Mary went,",
+          "notes": "D4:1 D4:1 D4:2 E4:1 G4:1 G4:2"
+        },
+        {
+          "text": "Everywhere that Mary went, the lamb was sure to go!",
+          "notes": "E4:1 D4:1 C4:1 D4:1 E4:1 E4:1 E4:1 E4:1 D4:1 D4:1 E4:1 D4:1 C4:4"
+        }
+      ]
+    },
+    {
+      "id": "london-bridge",
+      "title": "London Bridge",
+      "e": "🌉",
+      "tempo": 112,
+      "keywords": [
+        "london",
+        "bridge"
+      ],
+      "lines": [
+        {
+          "text": "London Bridge is falling down,",
+          "notes": "G4:1.5 A4:0.5 G4:1 F4:1 E4:1 F4:1 G4:2"
+        },
+        {
+          "text": "Falling down, falling down,",
+          "notes": "D4:1 E4:1 F4:2 E4:1 F4:1 G4:2"
+        },
+        {
+          "text": "London Bridge is falling down,",
+          "notes": "G4:1.5 A4:0.5 G4:1 F4:1 E4:1 F4:1 G4:2"
+        },
+        {
+          "text": "My fair lady!",
+          "notes": "D4:2 G4:2 E4:1 C4:3"
+        },
+        {
+          "text": "Build it up with sticks and stones,",
+          "notes": "G4:1.5 A4:0.5 G4:1 F4:1 E4:1 F4:1 G4:2"
+        },
+        {
+          "text": "Sticks and stones, sticks and stones,",
+          "notes": "D4:1 E4:1 F4:2 E4:1 F4:1 G4:2"
+        },
+        {
+          "text": "Build it up with sticks and stones,",
+          "notes": "G4:1.5 A4:0.5 G4:1 F4:1 E4:1 F4:1 G4:2"
+        },
+        {
+          "text": "My fair lady!",
+          "notes": "D4:2 G4:2 E4:1 C4:3"
+        }
+      ]
+    },
+    {
+      "id": "itsy-spider",
+      "title": "Itsy Bitsy Spider",
+      "e": "🕷️",
+      "tempo": 104,
+      "keywords": [
+        "spider",
+        "itsy",
+        "incy"
+      ],
+      "lines": [
+        {
+          "text": "The itsy bitsy spider climbed up the water spout.",
+          "notes": "D4:0.5 G4:1 G4:0.5 G4:1 A4:0.5 B4:1.5 B4:1 A4:0.5 G4:1 A4:0.5 B4:1 G4:2"
+        },
+        {
+          "text": "Down came the rain and washed the spider out.",
+          "notes": "B4:1.5 B4:1 C5:0.5 D5:1.5 D5:1 C5:0.5 B4:1 C5:0.5 D5:1 B4:2"
+        },
+        {
+          "text": "Out came the sun and dried up all the rain,",
+          "notes": "G4:1.5 G4:1 A4:0.5 B4:1.5 B4:1 A4:0.5 G4:1 A4:0.5 B4:1 G4:2"
+        },
+        {
+          "text": "And the itsy bitsy spider climbed up the spout again!",
+          "notes": "D4:0.5 D4:0.5 G4:1 G4:0.5 G4:1 A4:0.5 B4:1.5 B4:1 A4:0.5 G4:1 A4:0.5 B4:1 G4:2"
+        }
+      ]
+    },
+    {
+      "id": "are-you-sleeping",
+      "title": "Are You Sleeping?",
+      "e": "😴",
+      "tempo": 112,
+      "keywords": [
+        "sleeping",
+        "brother john",
+        "frere jacques",
+        "bells"
+      ],
+      "lines": [
+        {
+          "text": "Are you sleeping, are you sleeping,",
+          "notes": "C4:1 D4:1 E4:1 C4:1 C4:1 D4:1 E4:1 C4:1"
+        },
+        {
+          "text": "Brother John? Brother John?",
+          "notes": "E4:1 F4:1 G4:2 E4:1 F4:1 G4:2"
+        },
+        {
+          "text": "Morning bells are ringing, morning bells are ringing,",
+          "notes": "G4:0.5 A4:0.5 G4:0.5 F4:0.5 E4:1 C4:1 G4:0.5 A4:0.5 G4:0.5 F4:0.5 E4:1 C4:1"
+        },
+        {
+          "text": "Ding, dang, dong! Ding, dang, dong!",
+          "notes": "C4:1 G3:1 C4:2 C4:1 G3:1 C4:2"
+        }
+      ]
+    },
+    {
+      "id": "abc",
+      "title": "The ABC Song",
+      "e": "🔤",
+      "tempo": 100,
+      "keywords": [
+        "abc",
+        "alphabet",
+        "abcd"
+      ],
+      "lines": [
+        {
+          "text": "A, B, C, D, E, F, G,",
+          "notes": "C4:1 C4:1 G4:1 G4:1 A4:1 A4:1 G4:2"
+        },
+        {
+          "text": "H, I, J, K, L, M, N, O, P,",
+          "notes": "F4:1 F4:1 E4:1 E4:1 D4:0.5 D4:0.5 D4:0.5 D4:0.5 C4:2"
+        },
+        {
+          "text": "Q, R, S, T, U, V,",
+          "notes": "G4:1 G4:1 F4:2 E4:1 E4:1 D4:2"
+        },
+        {
+          "text": "W, X, Y and Z.",
+          "notes": "G4:0.5 G4:0.5 G4:1 F4:1 E4:1 E4:1 D4:2"
+        },
+        {
+          "text": "Now I know my ABCs,",
+          "notes": "C4:1 C4:1 G4:1 G4:1 A4:1 A4:1 G4:2"
+        },
+        {
+          "text": "Next time won't you sing with me!",
+          "notes": "F4:1 F4:1 E4:1 E4:1 D4:1 D4:1 C4:2"
+        }
+      ]
+    },
+    {
+      "id": "rain-rain",
+      "title": "Rain, Rain, Go Away",
+      "e": "🌧️",
+      "tempo": 104,
+      "keywords": [
+        "rain"
+      ],
+      "lines": [
+        {
+          "text": "Rain, rain, go away,",
+          "notes": "G4:1 E4:1 G4:0.5 G4:0.5 E4:1"
+        },
+        {
+          "text": "Come again another day,",
+          "notes": "G4:0.5 G4:0.5 E4:0.5 E4:0.5 G4:0.5 G4:0.5 E4:1"
+        },
+        {
+          "text": "Little children want to play,",
+          "notes": "A4:0.5 A4:0.5 G4:0.5 G4:0.5 E4:0.5 E4:0.5 G4:1"
+        },
+        {
+          "text": "Rain, rain, go away!",
+          "notes": "G4:1 E4:1 G4:0.5 G4:0.5 E4:1"
+        }
+      ]
+    },
+    {
+      "id": "hot-cross-buns",
+      "title": "Hot Cross Buns",
+      "e": "🥯",
+      "tempo": 108,
+      "keywords": [
+        "buns",
+        "hot cross"
+      ],
+      "lines": [
+        {
+          "text": "Hot cross buns!",
+          "notes": "E4:1 D4:1 C4:2"
+        },
+        {
+          "text": "Hot cross buns!",
+          "notes": "E4:1 D4:1 C4:2"
+        },
+        {
+          "text": "One a penny, two a penny,",
+          "notes": "C4:0.5 C4:0.5 C4:0.5 C4:0.5 D4:0.5 D4:0.5 D4:0.5 D4:0.5"
+        },
+        {
+          "text": "Hot cross buns!",
+          "notes": "E4:1 D4:1 C4:2"
+        }
+      ]
+    },
+    {
+      "id": "johny-johny",
+      "title": "Johny Johny Yes Papa",
+      "e": "👦",
+      "tempo": 108,
+      "keywords": [
+        "johny",
+        "johnny",
+        "papa"
+      ],
+      "lines": [
+        {
+          "text": "Johny, Johny!",
+          "notes": "G4:1 E4:1 G4:1 E4:1"
+        },
+        {
+          "text": "Yes, Papa!",
+          "notes": "A4:1 A4:1 G4:2"
+        },
+        {
+          "text": "Eating sugar?",
+          "notes": "G4:1 E4:1 G4:1 E4:1"
+        },
+        {
+          "text": "No, Papa!",
+          "notes": "A4:1 A4:1 G4:2"
+        },
+        {
+          "text": "Telling lies?",
+          "notes": "F4:1 E4:1 D4:2"
+        },
+        {
+          "text": "No, Papa!",
+          "notes": "A4:1 A4:1 G4:2"
+        },
+        {
+          "text": "Open your mouth!",
+          "notes": "G4:0.5 G4:0.5 E4:0.5 E4:0.5 G4:1 E4:1"
+        },
+        {
+          "text": "Ha, ha, ha!",
+          "notes": "A4:1 A4:1 G4:2"
+        }
+      ]
+    },
+    {
+      "id": "jingle-bells",
+      "title": "Jingle Bells",
+      "e": "🔔",
+      "tempo": 120,
+      "keywords": [
+        "jingle",
+        "bells"
+      ],
+      "lines": [
+        {
+          "text": "Jingle bells, jingle bells, jingle all the way!",
+          "notes": "E4:1 E4:1 E4:2 E4:1 E4:1 E4:2 E4:1 G4:1 C4:1.5 D4:0.5 E4:4"
+        },
+        {
+          "text": "Oh what fun it is to ride in a one-horse open sleigh, hey!",
+          "notes": "F4:1 F4:1 F4:1.5 F4:0.5 F4:1 E4:1 E4:1 E4:0.5 E4:0.5 E4:1 D4:1 D4:1 E4:1 D4:2 G4:2"
+        },
+        {
+          "text": "Jingle bells, jingle bells, jingle all the way!",
+          "notes": "E4:1 E4:1 E4:2 E4:1 E4:1 E4:2 E4:1 G4:1 C4:1.5 D4:0.5 E4:4"
+        },
+        {
+          "text": "Oh what fun it is to ride in a one-horse open sleigh!",
+          "notes": "F4:1 F4:1 F4:1.5 F4:0.5 F4:1 E4:1 E4:1 E4:0.5 E4:0.5 G4:1 G4:1 F4:1 D4:1 C4:4"
+        }
+      ]
+    },
+    {
+      "id": "old-macdonald-duck",
+      "title": "Old MacDonald: the Duck",
+      "e": "🦆",
+      "tempo": 120,
+      "keywords": [
+        "duck",
+        "quack"
+      ],
+      "lines": [
+        {
+          "text": "Old MacDonald had a farm,",
+          "notes": "G4:1 G4:1 G4:1 D4:1 E4:1 E4:1 D4:2"
+        },
+        {
+          "text": "E-I-E-I-O!",
+          "notes": "B4:1 B4:1 A4:1 A4:1 G4:3"
+        },
+        {
+          "text": "And on that farm he had a duck,",
+          "notes": "D4:1 G4:1 G4:1 G4:1 D4:1 E4:1 E4:1 D4:2"
+        },
+        {
+          "text": "E-I-E-I-O!",
+          "notes": "B4:1 B4:1 A4:1 A4:1 G4:3"
+        },
+        {
+          "text": "With a quack quack here, and a quack quack there,",
+          "notes": "D4:0.5 D4:0.5 G4:1 G4:1 G4:1 D4:0.5 D4:0.5 G4:1 G4:1 G4:1"
+        },
+        {
+          "text": "Here a quack, there a quack, everywhere a quack quack,",
+          "notes": "G4:0.5 G4:0.5 G4:1 G4:0.5 G4:0.5 G4:1 G4:0.5 G4:0.5 G4:0.5 G4:0.5 G4:1 G4:1"
+        },
+        {
+          "text": "Old MacDonald had a farm,",
+          "notes": "G4:1 G4:1 G4:1 D4:1 E4:1 E4:1 D4:2"
+        },
+        {
+          "text": "E-I-E-I-O!",
+          "notes": "B4:1 B4:1 A4:1 A4:1 G4:3"
+        }
+      ]
     }
   ],
   "faq": [

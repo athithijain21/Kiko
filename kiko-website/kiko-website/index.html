@@ -242,7 +242,6 @@ body.voice-only .vo-bar{display:flex;justify-content:center;gap:34px;margin-top:
   background:radial-gradient(circle,var(--ivory) 0 13%,transparent 14%),repeating-radial-gradient(circle,#2b2622 0 3px,#3a332d 3px 6px);box-shadow:0 6px 0 #1a1714;position:relative}
 .record .rec-e{font-size:40px;line-height:1}
 .record .rec-t{font:600 14px/1.15 var(--read);max-width:118px;text-align:center;background:var(--lac);padding:3px 8px;border-radius:10px}
-.record:nth-child(2) .rec-t{background:var(--leaf)} .record:nth-child(3) .rec-t{background:var(--peacock)} .record:nth-child(4) .rec-t{background:var(--kumkum)}
 .lyrics{max-width:62ch;width:100%;font-size:28px;line-height:1.55;text-align:center}
 .lyrics p{margin:0;padding:4px 12px;border-radius:14px;transition:background .2s}
 .lyrics p.now{background:#FCE3A3}
@@ -255,7 +254,7 @@ body.voice-only .vo-bar{display:flex;justify-content:center;gap:34px;margin-top:
 .seg{display:inline-flex;border-radius:999px;overflow:hidden;box-shadow:0 4px 0 #EADBB6}
 .seg button{padding:10px 16px;font:600 17px var(--read);background:#FFF6E0}
 .seg button[aria-pressed="true"]{background:var(--turmeric);color:#22201C}
-@media (max-width:600px){ .record{width:128px;height:128px} .lyrics{font-size:22px} }
+@media (max-width:600px){ .records{gap:12px} .record{width:104px;height:104px} .record .rec-e{font-size:28px} .record .rec-t{font-size:12px;max-width:92px;padding:2px 6px} .lyrics{font-size:22px} }
 @media (prefers-reduced-motion:reduce){
   #kiko.dance,.notes-fly,.lyrics .w{animation:none;transition:none}
   #kiko.blink .eyes,#kiko.wobble,#kiko .m-talk,.mic.on,#jar.bump{animation:none}
@@ -343,6 +342,7 @@ body.voice-only .vo-bar{display:flex;justify-content:center;gap:34px;margin-top:
     <div class="set"><label for="sHindi">In English, also say fruit names in Hindi</label>
       <select id="sHindi"><option value="1">Yes</option><option value="0">No</option></select></div>
     <div class="set"><span>KIKO's brain</span><span id="sServer">Checking…</span></div>
+    <div class="set"><span>Version</span><span id="sVersion">…</span></div>
     <p class="note" style="text-align:left">RFID cards: a USB reader that types the card number works here. Tap a new card and its number appears, then add it to <b>kiko/content.json</b> under "cards". The old page is at <a href="classic">/classic</a>.</p>
     <div class="ctrl"><button class="pill" id="sDone">Done</button><button class="pill soft" id="sReset">Reset stars</button></div>
   </div>
@@ -1114,14 +1114,20 @@ let songSpeed = 1, songLead = store.get("songLead", "voice");
 ACT.songs = (songId) => {
   const body = board("Songs");
   if (songId){ player(songId); return; }
-  const box = el("div", {class: "records"});
-  C.songs.forEach(s => box.append(el("button", {class: "record", "aria-label": s.title, on: {click: () => player(s.id)}},
-    el("span", {class: "rec-e"}, s.e), el("span", {class: "rec-t"}, s.title))));
-  body.append(el("p", {class: "prompt"}, t("Pick a song!")), box);
+  const REC_COLORS = ["var(--lac)", "var(--leaf)", "var(--peacock)", "var(--kumkum)", "var(--turmeric-dark)"];
+  const shelf = list => { const box = el("div", {class: "records"});
+    list.forEach((s, i) => box.append(el("button", {class: "record", "aria-label": s.title, on: {click: () => player(s.id, s)}},
+      el("span", {class: "rec-e"}, s.e), el("span", {class: "rec-t", style: `background:${REC_COLORS[i % 5]}`}, s.title))));
+    return box; };
+  body.append(el("p", {class: "prompt"}, t("Pick a song!")), shelf(C.songs));
+  // In Hindi/Kannada, the English songs are on a second shelf
+  const mine = new Set(C.songs.map(s => s.title));
+  const english = S.lang !== "en" && C_EN && C_EN.songs ? C_EN.songs.filter(s => !mine.has(s.title)) : [];
+  if (english.length) body.append(el("p", {class: "prompt", style: "font-size:24px;margin-top:10px"}, t("🌍 English songs")), shelf(english));
   say(t("Pick a song, and let's sing together!"));
 
-  function player(id){
-    const s = C.songs.find(x => x.id === id); if (!s) return;
+  function player(id, given){
+    const s = given || C.songs.find(x => x.id === id) || (C_EN && C_EN.songs || []).find(x => x.id === id); if (!s) return;
     const nid = ++nav; hush(); body.innerHTML = "";
     let tune = null, playing = false;
     const rows = s.lines.map(ln => {
@@ -1372,11 +1378,14 @@ function listen(onText, btn){
 /* ================= language ================= */
 // WEBSITE mode = no laptop server (e.g. GitHub Pages): content comes from files, the brain runs in this browser.
 let WEBSITE = false, C_EN = null;
+const KIKO_VERSION = "09 Nov 2026, 10:53 UTC";     // build_web.py writes the build date here, so you can check a phone has the newest website
 async function loadContent(){
   try{
     const r = await fetch(BASE + "/content?lang=" + S.lang);
     if (!r.ok) throw new Error("no server");
-    C = await r.json(); WEBSITE = false; return;
+    C = await r.json(); WEBSITE = false;
+    C_EN = S.lang === "en" ? C : (C_EN || await (await fetch(BASE + "/content?lang=en")).json());   // for English songs in Hindi/Kannada
+    return;
   }catch(e){ WEBSITE = true; }
   C_EN = C_EN || await (await fetch("kiko/content.json")).json();
   C = S.lang === "en" ? C_EN
@@ -1482,7 +1491,7 @@ function holdButton(btn, ms, fn){
   btn.addEventListener("click", () => { if (fired){ fired = false; return; } bubble.textContent = "Grown-ups: press and hold."; });
 }
 holdButton($("#gearRing"), 1200, () => {
-  $("#sLang").value = S.lang; $("#sAge").value = S.age; $("#sGender").value = S.voiceGender || "female"; $("#sTime").value = String(S.minutes); $("#sRate").value = String(S.rate); $("#sHindi").value = S.hindi ? "1" : "0";
+  $("#sLang").value = S.lang; $("#sVersion").textContent = KIKO_VERSION + " · " + ((C && C.songs) || []).length + " songs"; $("#sAge").value = S.age; $("#sGender").value = S.voiceGender || "female"; $("#sTime").value = String(S.minutes); $("#sRate").value = String(S.rate); $("#sHindi").value = S.hindi ? "1" : "0";
   $("#grownups").classList.add("open"); fillVoices();
   if (WEBSITE){
     const k = KikoBrain.savedBrain(), box = $("#sServer");
