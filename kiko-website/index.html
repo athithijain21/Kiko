@@ -1,0 +1,1320 @@
+<!doctype html>
+<html lang="en" translate="no" class="notranslate">
+<head>
+<meta charset="utf-8">
+<!-- KIKO handles its own languages: stop Edge/Chrome from machine-translating the page -->
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KIKO Playroom</title>
+<meta name="theme-color" content="#23305E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<!-- Fully offline: no CDN. Fonts live in static/fonts (SIL Open Font License). -->
+<style>
+@font-face{font-family:"Fredoka";src:url("static/fonts/fredoka-latin-500-normal.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Fredoka";src:url("static/fonts/fredoka-latin-600-normal.woff2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"Andika";src:url("static/fonts/andika-latin-400-normal.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Andika";src:url("static/fonts/andika-latin-700-normal.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Baloo 2";src:url("static/fonts/baloo-2-devanagari-500-normal.woff2") format("woff2");font-weight:400 600;font-display:swap;unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF}
+@font-face{font-family:"Baloo 2";src:url("static/fonts/baloo-2-devanagari-700-normal.woff2") format("woff2");font-weight:700;font-display:swap;unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF}
+@font-face{font-family:"Baloo Tamma 2";src:url("static/fonts/baloo-tamma-2-kannada-500-normal.woff2") format("woff2");font-weight:400 600;font-display:swap;unicode-range:U+0951-0952,U+0964-0965,U+0C80-0CF3,U+1CD0-1CF9,U+200C-200D,U+25CC}
+@font-face{font-family:"Baloo Tamma 2";src:url("static/fonts/baloo-tamma-2-kannada-700-normal.woff2") format("woff2");font-weight:700;font-display:swap;unicode-range:U+0951-0952,U+0964-0965,U+0C80-0CF3,U+1CD0-1CF9,U+200C-200D,U+25CC}
+
+/* Channapatna lacquer on a felt board */
+:root{
+  --felt:#23305E; --felt-deep:#18214A; --felt-light:#2F3E74;
+  --turmeric:#F2B632; --turmeric-dark:#B8820F;
+  --lac:#D7263D; --lac-dark:#931526;
+  --leaf:#2E9E5B; --leaf-dark:#1C6A3B;
+  --peacock:#1E88A8; --peacock-dark:#125A70;
+  --kumkum:#EE6C2B; --kumkum-dark:#A9440F;
+  --ivory:#FFF6E0; --ivory-edge:#EADBB6; --ink:#22201C; --wood:#9A6232;
+  --play:"Fredoka", "Baloo 2", "Baloo Tamma 2", "Trebuchet MS", system-ui, sans-serif;
+  --read:"Andika", "Baloo 2", "Baloo Tamma 2", "Verdana", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{
+  background-color:var(--felt);
+  background-image:
+    radial-gradient(rgba(255,255,255,.035) 1px, transparent 1.5px),
+    radial-gradient(rgba(0,0,0,.08) 1px, transparent 1.5px);
+  background-size:7px 7px, 11px 11px;
+  color:var(--ivory); font-family:var(--read); font-size:18px; line-height:1.45;
+  -webkit-tap-highlight-color:transparent; user-select:none; overflow-x:hidden;
+}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+html[lang="hi"] body,html[lang="kn"] body{line-height:1.6}
+html[lang="hi"] .tile,html[lang="kn"] .tile,html[lang="hi"] .slot,html[lang="kn"] .slot{padding-top:6px}
+:focus-visible{outline:4px solid var(--turmeric);outline-offset:4px;border-radius:14px}
+
+/* ---------- top: KIKO + what KIKO is saying ---------- */
+.top{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:20px;
+  max-width:1180px;margin:0 auto;padding:22px 24px 8px}
+#kikoBtn{display:block;border-radius:50%}
+#kiko{width:210px;height:252px;display:block;transition:width .45s ease,height .45s ease;overflow:visible}
+body.in-activity #kiko{width:92px;height:110px}
+.bubble{position:relative;background:var(--ivory);color:var(--ink);border-radius:30px;
+  padding:20px 28px;font-size:30px;line-height:1.3;max-width:640px;min-height:76px;
+  box-shadow:0 6px 0 var(--ivory-edge)}
+.bubble::before{content:"";position:absolute;left:-18px;top:34px;border:12px solid transparent;
+  border-right:20px solid var(--ivory);border-left:0}
+body.in-activity .bubble{font-size:24px;padding:14px 22px;min-height:0}
+body.in-activity .bubble::before{top:20px}
+.tools{display:flex;gap:10px;align-items:center}
+.tool{height:56px;min-width:56px;border-radius:28px;background:var(--felt-light);display:flex;
+  align-items:center;justify-content:center;gap:8px;padding:0 16px;font-family:var(--play);font-weight:600;font-size:20px;
+  box-shadow:inset 0 -3px 0 rgba(0,0,0,.25)}
+.tool .ico{font-size:24px}
+#jar.bump{animation:bump .5s ease}
+@keyframes bump{40%{transform:scale(1.25)}}
+#gearRing{position:relative}
+#gearRing::after{content:"";position:absolute;inset:-4px;border-radius:32px;border:4px solid var(--turmeric);
+  clip-path:inset(0 100% 0 0);transition:none}
+#gearRing.holding::after{clip-path:inset(0 0 0 0);transition:clip-path 1.2s linear}
+
+/* ---------- KIKO the spinning top ---------- */
+#kiko .eyes{transform-origin:100px 108px}
+#kiko.blink .eyes{animation:blink .18s ease}
+@keyframes blink{50%{transform:scaleY(.1)}}
+#kiko .m{display:none}
+#kiko[data-state="happy"] .m-happy,#kiko[data-state="cheer"] .m-cheer,#kiko[data-state="talking"] .m-talk,
+#kiko[data-state="thinking"] .m-think,#kiko[data-state="listening"] .m-listen,#kiko[data-state="sleepy"] .m-sleepy{display:inline}
+#kiko .m-talk{transform-origin:100px 140px;animation:talk .22s ease-in-out infinite alternate}
+@keyframes talk{from{transform:scaleY(.35)}to{transform:scaleY(1)}}
+#kiko[data-state="thinking"] .pupils{transform:translate(4px,-5px)}
+#kiko[data-state="sleepy"] .eyes-open{display:none}
+#kiko .eyes-shut{display:none}
+#kiko[data-state="sleepy"] .eyes-shut{display:inline}
+#kiko[data-state="listening"] .ear{opacity:1}
+#kiko .ear{opacity:0;transition:opacity .2s}
+#kiko.wobble{animation:wobble .9s ease}
+@keyframes wobble{20%{transform:rotate(-9deg)}45%{transform:rotate(7deg)}70%{transform:rotate(-4deg)}}
+#kiko{transform-origin:50% 92%}
+
+/* ---------- home: the token tray ---------- */
+main{max-width:1180px;margin:0 auto;padding:10px 24px 40px}
+.tray{display:flex;flex-wrap:wrap;justify-content:center;gap:30px 34px;padding:26px 0 10px}
+.tok{display:flex;flex-direction:column;align-items:center;gap:12px;width:140px}
+.tok .disc{
+  --c:var(--turmeric);--d:var(--turmeric-dark);--b1:var(--lac);--b2:var(--leaf);
+  width:128px;height:128px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;
+  background:
+    radial-gradient(circle at 33% 27%, rgba(255,255,255,.75) 0, rgba(255,255,255,.18) 13%, transparent 24%),
+    radial-gradient(circle, var(--c) 0 47%, var(--b1) 47% 52%, var(--c) 52% 62%, var(--b2) 62% 66%, var(--c) 66%);
+  box-shadow:inset 0 -10px 16px rgba(0,0,0,.22), 0 9px 0 var(--d), 0 16px 22px rgba(0,0,0,.35);
+  transition:transform .08s ease, box-shadow .08s ease;
+}
+.tok:active .disc,.tok.pressed .disc{transform:translateY(7px);box-shadow:inset 0 -10px 16px rgba(0,0,0,.22), 0 2px 0 var(--d), 0 5px 10px rgba(0,0,0,.35)}
+.tok .face{font-size:54px;line-height:1;filter:drop-shadow(0 2px 0 rgba(0,0,0,.18))}
+.tok .face.txt{font-family:var(--read);font-weight:700;font-size:33px;color:var(--ink);background:var(--ivory);
+  width:76px;height:76px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 3px 6px rgba(0,0,0,.18)}
+.tok .lbl{font-family:var(--play);font-weight:600;font-size:21px;letter-spacing:.2px}
+.c-turmeric{--c:var(--turmeric)!important;--d:var(--turmeric-dark)!important;--b1:var(--lac)!important;--b2:var(--leaf)!important}
+.c-lac{--c:var(--lac)!important;--d:var(--lac-dark)!important;--b1:var(--turmeric)!important;--b2:var(--ivory)!important}
+.c-leaf{--c:var(--leaf)!important;--d:var(--leaf-dark)!important;--b1:var(--turmeric)!important;--b2:var(--lac)!important}
+.c-peacock{--c:var(--peacock)!important;--d:var(--peacock-dark)!important;--b1:var(--turmeric)!important;--b2:var(--ivory)!important}
+.c-kumkum{--c:var(--kumkum)!important;--d:var(--kumkum-dark)!important;--b1:var(--ivory)!important;--b2:var(--leaf)!important}
+
+/* ---------- activity board (ivory, stitched edge) ---------- */
+.board{background:var(--ivory);color:var(--ink);border-radius:34px;padding:26px 28px 32px;position:relative;
+  box-shadow:0 10px 0 var(--ivory-edge), 0 22px 40px rgba(0,0,0,.3)}
+.board::before{content:"";position:absolute;inset:10px;border:2px dashed rgba(34,32,28,.16);border-radius:26px;pointer-events:none}
+.bhead{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px;position:relative}
+.home-tok{width:64px;height:64px;border-radius:50%;flex:none;font-size:30px;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 33% 27%, rgba(255,255,255,.7), transparent 30%), var(--peacock);
+  box-shadow:0 5px 0 var(--peacock-dark);color:var(--ivory)}
+.home-tok:active{transform:translateY(4px);box-shadow:0 1px 0 var(--peacock-dark)}
+.btitle{font-family:var(--play);font-weight:600;font-size:32px;margin:0;flex:1}
+.tabs{display:flex;gap:10px;flex-wrap:wrap}
+.tab{padding:10px 18px;border-radius:24px;background:#F1E4C3;font-family:var(--play);font-weight:600;font-size:19px;color:var(--ink)}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--ivory)}
+.bbody{position:relative;min-height:380px;display:flex;flex-direction:column;align-items:center;gap:22px}
+.prompt{font-family:var(--play);font-weight:600;font-size:36px;text-align:center;margin:4px 0 0}
+.row{display:flex;flex-wrap:wrap;justify-content:center;gap:18px}
+.tile{min-width:120px;height:120px;padding:0 18px;border-radius:26px;background:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:var(--read);font-weight:700;font-size:64px;color:var(--ink);box-shadow:0 6px 0 var(--ivory-edge), 0 8px 16px rgba(34,32,28,.12);
+  transition:transform .08s}
+.tile:active{transform:translateY(5px);box-shadow:0 1px 0 var(--ivory-edge)}
+.tile.emo{font-size:70px}
+.tile.small{min-width:84px;height:84px;font-size:44px;border-radius:20px}
+.tile.right{background:#DDF3E4;box-shadow:0 6px 0 var(--leaf)}
+.tile.wrong{animation:shake .4s}
+.tile:disabled{opacity:.35;cursor:default}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:14px;width:100%}
+.grid .tile{min-width:0;height:92px;font-size:48px}
+.big{display:flex;align-items:center;gap:34px;flex-wrap:wrap;justify-content:center}
+.big .glyph{font-family:var(--read);font-weight:700;font-size:170px;line-height:1}
+.big .pic{font-size:150px;line-height:1}
+.big .name{font-family:var(--play);font-weight:600;font-size:44px}
+.big .sub{font-size:24px;color:#5B5246;max-width:28ch}
+.ctrl{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.pill{padding:14px 24px;border-radius:30px;background:var(--ink);color:var(--ivory);font-family:var(--play);font-weight:600;font-size:21px;
+  box-shadow:0 5px 0 #000}
+.pill:active{transform:translateY(4px);box-shadow:0 1px 0 #000}
+.pill.soft{background:#F1E4C3;color:var(--ink);box-shadow:0 5px 0 var(--ivory-edge)}
+.slots{display:flex;gap:12px}
+.slot{width:92px;height:104px;border-radius:18px;border:4px dashed #CDBB92;display:flex;align-items:center;justify-content:center;
+  font-family:var(--read);font-weight:700;font-size:64px;color:var(--ink)}
+.slot.hint{color:rgba(34,32,28,.18)}
+.slot.full{border-style:solid;border-color:var(--leaf);background:#DDF3E4;color:var(--ink)}
+.feltbox{background:var(--felt);border-radius:24px;padding:22px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:620px}
+.feltbox button{font-size:56px;position:relative;width:76px;height:76px}
+.feltbox button[data-n]::after{content:attr(data-n);position:absolute;right:-4px;top:-4px;background:var(--turmeric);color:var(--ink);
+  font:600 20px var(--play);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.plus{font:600 60px var(--play);color:var(--ivory)}
+canvas.trace{background:#fff;border-radius:26px;touch-action:none;box-shadow:inset 0 0 0 3px #EADBB6;cursor:crosshair}
+.shelf{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;align-items:flex-end;padding:10px 0 16px;border-bottom:14px solid var(--wood);border-radius:0 0 6px 6px;width:100%}
+.book{width:122px;height:186px;border-radius:10px 14px 14px 10px;display:flex;flex-direction:column;justify-content:space-between;
+  padding:14px 10px;color:var(--ivory);text-align:left;box-shadow:inset 8px 0 0 rgba(0,0,0,.18), 0 6px 0 rgba(0,0,0,.2)}
+.book .bk-e{font-size:46px}
+.book .bk-t{font-family:var(--play);font-weight:600;font-size:17px;line-height:1.15}
+.reader{max-width:62ch;width:100%;font-size:27px;line-height:1.6}
+.reader p{margin:0;padding:4px 12px;border-radius:12px;cursor:pointer}
+.reader p.now{background:#FCE3A3}
+.lesson{background:#DDF3E4;border-radius:20px;padding:16px 22px;font-size:24px;font-weight:700;max-width:62ch}
+.chat{width:100%;max-width:760px;height:330px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:6px}
+.msg{max-width:80%;padding:14px 18px;border-radius:22px;font-size:22px;line-height:1.4;white-space:pre-line}
+.msg.k{background:#FCE3A3;align-self:flex-start;border-bottom-left-radius:6px}
+.msg.u{background:#CFE9F2;align-self:flex-end;border-bottom-right-radius:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip{padding:8px 14px;border-radius:20px;background:#F1E4C3;font-family:var(--play);font-weight:500;font-size:18px}
+.chip[aria-pressed="true"]{background:var(--peacock);color:#fff}
+.say{display:flex;gap:10px;width:100%;max-width:760px}
+.say input{flex:1;min-width:0;font:22px var(--read);padding:14px 20px;border-radius:30px;border:3px solid #E6D5AE;background:#fff;color:var(--ink)}
+.mic{width:60px;height:60px;border-radius:50%;background:var(--lac);color:#fff;font-size:28px;flex:none;box-shadow:0 5px 0 var(--lac-dark)}
+.mic.on{animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.12)}}
+.breath{width:230px;height:230px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#7FD3E8,var(--peacock));
+  display:flex;align-items:center;justify-content:center;color:#fff;font:600 28px var(--play);transition:transform 4s ease-in-out;transform:scale(.7)}
+.breath.in{transform:scale(1.15)}
+.feel{display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--play);font-weight:600;font-size:18px}
+.feel span{font-size:56px}
+.idea{font-size:34px;font-weight:700;text-align:center;max-width:24ch;line-height:1.35}
+.note{font-size:18px;color:#6B6152;text-align:center;max-width:56ch}
+
+/* ---------- overlays ---------- */
+.veil{position:fixed;inset:0;background:rgba(17,23,52,.82);display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+.veil.open{display:flex}
+.card{background:var(--ivory);color:var(--ink);border-radius:30px;padding:28px;max-width:560px;width:100%;max-height:90vh;overflow:auto}
+.card h2{font:600 30px var(--play);margin:0 0 14px}
+.set{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #EADBB6;font-size:20px}
+.set select{font:18px var(--read);padding:8px 10px;border-radius:12px;border:2px solid #E6D5AE;background:#fff}
+.stickers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:10px 0 18px}
+.stk{aspect-ratio:1;border-radius:50%;background:#F1E4C3;display:flex;align-items:center;justify-content:center;font-size:44px}
+.stk.locked{color:#CDBB92;font:600 30px var(--play)}
+.hold{position:relative;overflow:hidden}
+.hold .fill{position:absolute;inset:0;background:rgba(242,182,50,.45);transform:scaleX(0);transform-origin:left}
+.hold.holding .fill{transform:scaleX(1);transition:transform 2s linear}
+.hold span{position:relative}
+
+/* ---------- voice-only (screen-lite) ---------- */
+.vo-bar{display:none}
+body.voice-only{background:#0E1430}
+body.voice-only main,body.voice-only .tools>*:not(#voBtn){display:none}
+body.voice-only .top{grid-template-columns:1fr;justify-items:center;padding-top:8vh}
+body.voice-only #kiko{width:300px;height:360px}
+body.voice-only .bubble{font-size:22px;opacity:.75}
+body.voice-only .bubble::before{display:none}
+body.voice-only .tools{position:fixed;top:16px;right:16px}
+body.voice-only .vo-bar{display:flex;justify-content:center;gap:34px;margin-top:28px}
+
+@media (max-width:760px){
+  .top{grid-template-columns:auto 1fr;padding:14px 16px 4px;gap:12px}
+  .tools{grid-column:1/-1;justify-content:flex-end;order:-1}
+  #kiko{width:120px;height:144px} body.in-activity #kiko{width:64px;height:77px}
+  .bubble{font-size:21px;padding:14px 18px} body.in-activity .bubble{font-size:18px}
+  main{padding:8px 16px 30px} .tray{gap:22px 18px}
+  .tok{width:104px} .tok .disc{width:96px;height:96px} .tok .face{font-size:40px} .tok .face.txt{width:58px;height:58px;font-size:25px}
+  .big{text-align:center;gap:16px}
+  .board{padding:20px 16px 24px;border-radius:26px} .btitle{font-size:26px} .prompt{font-size:28px}
+  .tile{min-width:92px;height:92px;font-size:48px} .tile.emo{font-size:52px}
+  .big .glyph{font-size:120px} .big .pic{font-size:110px} .slot{width:64px;height:76px;font-size:44px}
+  .reader{font-size:22px} .msg{font-size:19px}
+}
+@media (prefers-reduced-motion:reduce){
+  #kiko.blink .eyes,#kiko.wobble,#kiko .m-talk,.mic.on,#jar.bump{animation:none}
+  .breath{transition-duration:.01s}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <button id="kikoBtn" aria-label="Tap KIKO to hear it again">
+    <svg id="kiko" viewBox="0 0 200 240" data-state="happy" aria-hidden="true">
+      <defs>
+        <radialGradient id="body" cx="38%" cy="30%" r="75%">
+          <stop offset="0" stop-color="#FFD873"/><stop offset=".55" stop-color="#F2B632"/><stop offset="1" stop-color="#C98C12"/>
+        </radialGradient>
+        <clipPath id="bodyClip"><circle cx="100" cy="122" r="86"/></clipPath>
+      </defs>
+      <path d="M84 196 L100 236 L116 196 Z" fill="#9A6232"/>
+      <rect x="89" y="8" width="22" height="30" rx="9" fill="#D7263D"/>
+      <rect x="93" y="10" width="5" height="22" rx="2.5" fill="#fff" opacity=".35"/>
+      <circle cx="100" cy="122" r="86" fill="url(#body)"/>
+      <g clip-path="url(#bodyClip)">
+        <rect x="0" y="172" width="200" height="11" fill="#D7263D"/>
+        <rect x="0" y="187" width="200" height="6" fill="#2E9E5B"/>
+        <rect x="0" y="197" width="200" height="30" fill="#D7263D"/>
+      </g>
+      <ellipse cx="68" cy="68" rx="26" ry="16" fill="#fff" opacity=".45" transform="rotate(-25 68 68)"/>
+      <g class="eyes">
+        <g class="eyes-open">
+          <ellipse cx="72" cy="108" rx="11" ry="14" fill="#22201C"/><ellipse cx="128" cy="108" rx="11" ry="14" fill="#22201C"/>
+          <g class="pupils"><circle cx="75" cy="103" r="4" fill="#fff"/><circle cx="131" cy="103" r="4" fill="#fff"/></g>
+        </g>
+        <g class="eyes-shut" stroke="#22201C" stroke-width="5" stroke-linecap="round" fill="none">
+          <path d="M61 110 Q72 117 83 110"/><path d="M117 110 Q128 117 139 110"/>
+        </g>
+      </g>
+      <circle cx="52" cy="136" r="11" fill="#D7263D" opacity=".28"/><circle cx="148" cy="136" r="11" fill="#D7263D" opacity=".28"/>
+      <g fill="none" stroke="#22201C" stroke-width="6" stroke-linecap="round">
+        <path class="m m-happy" d="M74 136 Q100 160 126 136"/>
+        <path class="m m-think" d="M80 144 Q100 138 120 146"/>
+        <path class="m m-sleepy" d="M86 144 Q100 150 114 144"/>
+      </g>
+      <path class="m m-cheer" d="M70 132 Q100 172 130 132 Z" fill="#22201C"/>
+      <ellipse class="m m-talk" cx="100" cy="142" rx="15" ry="12" fill="#22201C"/>
+      <ellipse class="m m-listen" cx="100" cy="142" rx="8" ry="8" fill="#22201C"/>
+      <g class="ear" fill="#2E9E5B"><circle cx="10" cy="110" r="7"/><circle cx="190" cy="110" r="7"/></g>
+    </svg>
+  </button>
+  <div class="bubble" id="bubble" aria-live="polite">Hi friend! I'm KIKO.</div>
+  <div class="tools">
+    <button class="tool" id="jar" aria-label="My sticker jar"><span class="ico">⭐</span><span id="starCount">0</span></button>
+    <button class="tool" id="langBtn" aria-label="Change language"><span class="ico">🗣️</span><span id="langLbl">EN</span></button>
+    <button class="tool" id="voBtn" aria-label="Voice only mode: rest your eyes"><span class="ico">🌙</span></button>
+    <button class="tool" id="gearRing" aria-label="Grown-ups: press and hold"><span class="ico">⚙️</span></button>
+  </div>
+  <div class="vo-bar" id="voBar">
+    <div class="tok"><button class="disc c-lac" id="voTalk" aria-label="Talk to KIKO"><span class="face">🎤</span></button><span class="lbl" data-t="Talk">Talk</span></div>
+    <div class="tok"><button class="disc c-leaf" id="voStory" aria-label="Hear a story"><span class="face">📖</span></button><span class="lbl" data-t="📖 Story">Story</span></div>
+    <div class="tok"><button class="disc c-turmeric" id="voSong" aria-label="Breathe with KIKO"><span class="face">🫧</span></button><span class="lbl" data-t="Breathe">Breathe</span></div>
+  </div>
+</header>
+
+<main id="main"></main>
+
+<div class="veil" id="grownups" role="dialog" aria-label="Grown-ups">
+  <div class="card">
+    <h2>For grown-ups</h2>
+    <div class="set"><label for="sLang">Language</label>
+      <select id="sLang"><option value="en">English</option><option value="hi">हिंदी (Hindi)</option><option value="kn">ಕನ್ನಡ (Kannada)</option></select></div>
+    <div class="set"><label for="sVoicePick">KIKO's voice</label>
+      <span style="display:flex;gap:8px;align-items:center"><select id="sVoicePick" style="max-width:260px"></select>
+      <button class="pill soft" id="sVoiceTest" style="padding:8px 14px;font-size:17px">▶ Test</button></span></div>
+    <div class="set"><span>Not sure which voices work?</span><button class="pill soft" id="sVoiceCheck" style="padding:8px 14px;font-size:17px">🔎 Check all voices</button></div>
+    <pre id="sVoiceReport" style="display:none;white-space:pre-wrap;font:14px/1.5 Consolas,monospace;background:#fff;border-radius:12px;padding:10px;max-height:240px;overflow:auto;margin:8px 0"></pre>
+    <p class="note" id="sVoice" style="text-align:left;margin:6px 0 0">Checking…</p>
+    <div class="set"><label for="sAge">Child's age</label>
+      <select id="sAge"><option value="3-5">3 to 5</option><option value="6-8">6 to 8</option><option value="9-12">9 to 12</option></select></div>
+    <div class="set"><label for="sTime">Screen time before a break</label>
+      <select id="sTime"><option value="0">No limit</option><option value="10">10 minutes</option><option value="20">20 minutes</option><option value="30">30 minutes</option></select></div>
+    <div class="set"><label for="sRate">KIKO's talking speed</label>
+      <select id="sRate"><option value="0.8">Slow</option><option value="0.92">Normal</option><option value="1.05">Quick</option></select></div>
+    <div class="set"><label for="sHindi">In English, also say fruit names in Hindi</label>
+      <select id="sHindi"><option value="1">Yes</option><option value="0">No</option></select></div>
+    <div class="set"><span>KIKO's brain</span><span id="sServer">Checking…</span></div>
+    <p class="note" style="text-align:left">RFID cards: a USB reader that types the card number works here. Tap a new card and its number appears, then add it to <b>kiko/content.json</b> under "cards". The old page is at <a href="classic">/classic</a>.</p>
+    <div class="ctrl"><button class="pill" id="sDone">Done</button><button class="pill soft" id="sReset">Reset stars</button></div>
+  </div>
+</div>
+
+<div class="veil" id="stickerBook" role="dialog" aria-label="Sticker jar">
+  <div class="card" style="text-align:center">
+    <h2 data-t="My stickers">My stickers</h2>
+    <div class="stickers" id="stickers"></div>
+    <p class="note" id="stickerNote" style="margin:0 auto 16px"></p>
+    <button class="pill" id="stickerClose" data-t="Close">Close</button>
+  </div>
+</div>
+
+<div class="veil" id="restVeil" role="dialog" aria-label="Time for a break">
+  <div class="card" style="text-align:center">
+    <h2 data-t="Time to rest your eyes!">Time to rest your eyes!</h2>
+    <p class="idea" id="restIdea" style="margin:10px auto 22px;font-size:26px"></p>
+    <button class="pill hold" id="restHold"><span class="fill"></span><span data-t="Grown-up: hold to keep playing">Grown-up: hold to keep playing</span></button>
+  </div>
+</div>
+
+<script src="static/kiko-brain.js"></script>
+<script>
+"use strict";
+/* ================= setup ================= */
+// Served by kiko_server.py (on this laptop, over Wi-Fi, or through a share link): talk to the same address.
+// Only when opened as a file or from VS Code Live Server do we point at the local server.
+const BASE = (location.protocol === "file:" || location.port === "5500") ? "http://127.0.0.1:5000" : "";
+const SESSION = Math.random().toString(36).slice(2);
+const $ = s => document.querySelector(s);
+const main = $("#main"), bubble = $("#bubble"), kiko = $("#kiko");
+let C = null;                          // curated content for the current language
+let nav = 0;                           // increases on every screen change; stops old timers/speech
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem("kiko_" + k); return v === null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem("kiko_" + k, JSON.stringify(v)); }catch(e){} }
+};
+const S = Object.assign({age:"6-8", minutes:20, rate:0.92, hindi:true, lang:"en"}, store.get("settings", {}));
+let stars = store.get("stars", 0);
+
+/* ================= languages ================= */
+const LANGS = ["en", "hi", "kn"];
+const SPEECH = {en: "en-IN", hi: "hi-IN", kn: "kn-IN"};
+const LANG_LABEL = {en: "EN", hi: "हि", kn: "ಕ"};
+// t("Find the letter {l}!", {l: "M"}): English text is the key; content_hi/kn.json "ui" has the translations.
+function t(key, vars = {}){
+  let s = (C && C.ui && C.ui[key]) || key;
+  for (const [k, v] of Object.entries(vars)) s = s.split("{" + k + "}").join(v);
+  return s;
+}
+const en = () => S.lang === "en";
+const an = w => (/^[aeiou]/i.test(w) ? "an " : "a ") + w;   // "an apple", "a mango"
+const art = w => en() ? an(w) : w;                           // articles only exist in English
+const lc = w => en() ? w.toLowerCase() : w;
+function applyStatic(){
+  document.documentElement.lang = S.lang;
+  $("#langLbl").textContent = LANG_LABEL[S.lang];
+  document.querySelectorAll("[data-t]").forEach(n => n.textContent = t(n.dataset.t));
+}
+
+function el(tag, attrs = {}, ...kids){
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)){
+    if (k === "on") for (const [ev, fn] of Object.entries(v)) n.addEventListener(ev, fn);
+    else if (k === "class") n.className = v;
+    else if (k === "html") n.innerHTML = v;
+    else if (v !== false && v != null) n.setAttribute(k, v);
+  }
+  for (const c of kids.flat()) if (c != null) n.append(c.nodeType ? c : document.createTextNode(c));
+  return n;
+}
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const sample = (a, n, not) => shuffle(a.filter(x => !not.includes(x))).slice(0, n);
+const options = (target, pool, n) => shuffle([target, ...sample(pool, n - 1, [target])]);
+const nOpts = () => S.age === "3-5" ? 3 : 4;
+const live = id => id === nav;       // is this screen still the one showing?
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+/* ================= KIKO: face, voice, sounds ================= */
+let kState = "happy";
+function face(s){ kState = s; kiko.dataset.state = s; }
+setInterval(() => { if (kState !== "sleepy"){ kiko.classList.add("blink"); setTimeout(() => kiko.classList.remove("blink"), 200); } }, 4200);
+function cheer(){ face("cheer"); kiko.classList.remove("wobble"); void kiko.offsetWidth; kiko.classList.add("wobble"); chime(true); }
+
+let voices = [];
+function loadVoices(){ voices = "speechSynthesis" in window ? speechSynthesis.getVoices() : []; }
+loadVoices(); if ("speechSynthesis" in window) speechSynthesis.onvoiceschanged = loadVoices;
+const badVoices = new Set(), strikes = {};
+const goodVoices = store.get("goodVoices", {});      // voices that have really spoken here (remembered)
+function markGood(v){ if (!goodVoices[v.name]){ goodVoices[v.name] = 1; store.set("goodVoices", goodVoices); } badVoices.delete(v.name); delete strikes[v.name]; }                 // voices that failed on this computer: skip them
+const normLang = v => (v.lang || "").replace("_", "-");
+const KNOWN_GOOD = {
+  en: /Neerja|Prabhat|Google UK English|Google US English|Heera|Ravi/i,
+  hi: /Swara|Madhur|स्वरा|मधुर|Google हिन्दी|Google Hindi|Kalpana|Hemant|कल्पना|हेमंत/i,   // Edge may write names in Devanagari
+  kn: /Sapna|Gagan|ಸಪ್ನಾ|ಗಗನ್|Google ಕನ್ನಡ|Google Kannada/i,                              // ...or in Kannada script
+};
+function voicesFor(lang){
+  const base = lang.split("-")[0];
+  const same = voices.filter(v => normLang(v).split("-")[0] === base);
+  // Well-known voices that reliably work (Edge natural voices, Chrome's Google voices) come first,
+  // then the exact language (en-IN, hi-IN, kn-IN), then offline before online.
+  const known = KNOWN_GOOD[base];
+  const rank = v => (known && known.test(v.name) ? 0 : 10) + (normLang(v) === lang ? 0 : 4) + (/multilingual|indic/i.test(v.name) ? 2 : 0) + (v.localService ? 0 : 1);
+  return same.sort((x, y) => rank(x) - rank(y));
+}
+function voiceFor(lang){
+  // 1) the voice a grown-up picked in settings, 2) offline voices, 3) online voices.
+  // For Hindi/Kannada we never fall back to an English voice: it would read the letters wrongly.
+  const base = lang.split("-")[0];
+  const pref = (S.voices || {})[base];
+  // A voice that stayed silent once goes to the back of the line; twice and it's skipped.
+  // Order: the grown-up's pick, then voices that have really spoken on this computer, then the rest.
+  // A voice that stayed silent goes to the back; silent twice and it's skipped.
+  const st = v => (strikes[v.name] || 0) * 10 + (v.name === pref ? 0 : goodVoices[v.name] ? 1 : 2);
+  const list = voicesFor(lang).filter(v => !badVoices.has(v.name)).sort((x, y) => st(x) - st(y));
+  const chosen = list[0];
+  if (chosen || base !== "en") return chosen || null;
+  return voices.find(v => /^en/.test(normLang(v))) || null;
+}
+let lastSaid = "";
+// Pick the voice from the text itself: Devanagari -> Hindi voice, Kannada script -> Kannada voice,
+// English letters -> English voice. Plain numbers use the current language ("5" -> "पाँच").
+function langOfText(text){
+  let hi = 0, kn = 0, latin = 0;
+  for (const ch of text){
+    const c = ch.codePointAt(0);
+    if (c >= 0x0900 && c <= 0x097F) hi++;
+    else if (c >= 0x0C80 && c <= 0x0CFF) kn++;
+    else if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122)) latin++;
+  }
+  if (!hi && !kn && !latin) return S.lang;
+  if (kn >= hi && kn >= latin / 3) return "kn";
+  if (hi >= latin / 3) return "hi";
+  return "en";
+}
+// Errors that are NOT the voice's fault: the browser blocking speech before the first tap,
+// our own stop, a busy speaker, or a network hiccup. These never count against a voice.
+const NOT_VOICE_FAULT = new Set(["not-allowed", "interrupted", "canceled", "audio-busy", "network"]);
+const hasTapped = () => !navigator.userActivation || navigator.userActivation.hasBeenActive;
+// The first tap gives every voice a fresh start (anything blocked before it wasn't the voice's fault).
+["pointerdown", "keydown"].forEach(ev => document.addEventListener(ev, () => {
+  badVoices.clear(); for (const k in strikes) delete strikes[k];
+  if ("speechSynthesis" in window) speechSynthesis.resume();
+}, {once: true, capture: true}));
+function strike(v){ strikes[v.name] = (strikes[v.name] || 0) + 1; if (strikes[v.name] >= 2) badVoices.add(v.name); }
+let sayToken = 0;                              // the newest say() wins; older ones stop quietly
+function say(text, {show = true} = {}){
+  if (show){ bubble.textContent = text; lastSaid = text; }
+  const lang = SPEECH[langOfText(text)];
+  const clean = text.replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}️‍]/gu, "").replace(/\b([AB])\)/g, "$1,");
+  const my = ++sayToken;
+  return new Promise(done => {
+    let finished = false;
+    const end = () => { if (finished) return; finished = true; if (kState === "talking" && my === sayToken) face("happy"); done(); };
+    const readTime = () => setTimeout(end, Math.min(6000, 1200 + text.length * 45));
+    if (!("speechSynthesis" in window)){ noVoicesHint(); readTime(); return; }
+    if (!voices.length) loadVoices();
+    if (!voices.length) setTimeout(() => { loadVoices(); if (!voices.length) noVoicesHint(); }, 1500);
+    if (speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel();   // stop anything older
+    const attempt = (tries) => {
+      if (my !== sayToken) return end();
+      const v = voiceFor(lang);
+      if (!v){                                 // no voice for this language: give time to read instead
+        if (voices.length) noVoicesHint(lang.split("-")[0]);
+        readTime(); return;
+      }
+      const u = new SpeechSynthesisUtterance(clean);
+      let speakAt = Date.now() + 60, timedOut = false;
+      u.voice = v; u.lang = normLang(v) || lang; u.rate = S.rate; u.pitch = 1.2;
+      let started = false;
+      u.onstart = () => { started = true; markGood(v); if (my === sayToken) face("talking"); };
+      u.onend = end;
+      u.onerror = e => {
+        const waited = Date.now() - speakAt;
+        if (!started && !timedOut && waited > 2500 && hasTapped() && (e.error === "interrupted" || e.error === "canceled")) strike(v);   // silent for 2.5 s, then cut off
+        if (my !== sayToken || NOT_VOICE_FAULT.has(e.error) || !hasTapped()) return end();
+        strike(v); if (tries < 2) setTimeout(() => attempt(tries + 1), 80); else end();
+      };
+      // Online voices need a moment to start; a voice that stays silent twice is skipped from then on.
+      setTimeout(() => {
+        if (started || finished || my !== sayToken) return;
+        if (!hasTapped()){ end(); return; }    // blocked until the first tap: not the voice's fault
+        timedOut = true; strike(v); speechSynthesis.cancel();
+        if (tries < 2) setTimeout(() => attempt(tries + 1), 80); else end();
+      }, goodVoices[v.name] ? 8000 : v.localService ? 2500 : 6000);
+      setTimeout(() => { if (my === sayToken) speechSynthesis.speak(u); }, 60);   // speaking right after cancel() gets dropped
+    };
+    setTimeout(end, 9000 + text.length * 130 / S.rate);         // never get stuck waiting
+    attempt(0);
+  });
+}
+// Some browsers (like the preview inside VS Code) have no voices at all. Tell the grown-up once.
+let hinted = false;
+function noVoicesHint(lang){
+  if (hinted) return; hinted = true;
+  const msg = lang && lang !== "en"
+    ? `🔇 This browser has no ${lang === "hi" ? "Hindi" : "Kannada"} voice, so KIKO only shows the words. Open http://127.0.0.1:5000 in Microsoft Edge to hear it.`
+    : "🔇 This browser has no voices, so KIKO can't talk here. Open http://127.0.0.1:5000 in Microsoft Edge or Chrome.";
+  document.body.append(el("div", {role: "status", style: "position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:30;background:#FFF6E0;color:#22201C;" +
+    "padding:12px 18px;border-radius:16px;box-shadow:0 6px 0 #EADBB6;font:18px var(--read);max-width:min(92vw,640px);text-align:center"},
+    msg));
+}
+function hush(){ sayToken++; if ("speechSynthesis" in window) speechSynthesis.cancel(); if (kState === "talking") face("happy"); }
+
+let actx = null;
+function chime(good){
+  try{
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const notes = good ? [660, 880, 1175] : [300, 220];
+    notes.forEach((f, i) => {
+      const o = actx.createOscillator(), g = actx.createGain(), at = actx.currentTime + i * 0.11;
+      o.type = good ? "triangle" : "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(0.18, at + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, at + 0.28);
+      o.connect(g).connect(actx.destination); o.start(at); o.stop(at + 0.3);
+    });
+  }catch(e){}
+}
+
+/* ================= stars & stickers ================= */
+const STICKERS = ["🦚","🪁","🌈","🐘","🥭","🚂","🌻","🦋","🎈","🐢","🌙","🍦","🦁","🪀","🐬","🌟"];
+function showStars(){ $("#starCount").textContent = stars; }
+function addStar(){
+  stars++; store.set("stars", stars); showStars();
+  const j = $("#jar"); j.classList.remove("bump"); void j.offsetWidth; j.classList.add("bump");
+  if (stars % 5 === 0 && stars / 5 <= STICKERS.length){
+    setTimeout(() => say(t("Wow! You got a new sticker: {s} Look in your star jar!", {s: STICKERS[stars / 5 - 1]})), 1800);
+  }
+}
+$("#jar").onclick = () => {
+  const got = Math.floor(stars / 5), box = $("#stickers"); box.innerHTML = "";
+  STICKERS.forEach((s, i) => box.append(el("div", {class: "stk" + (i < got ? "" : " locked")}, i < got ? s : "?")));
+  $("#stickerNote").textContent = got >= STICKERS.length ? t("You found every sticker!") : t("{n} more stars for the next sticker.", {n: 5 - stars % 5});
+  $("#stickerBook").classList.add("open"); say(t("You have {n} stars!", {n: stars}));
+};
+$("#stickerClose").onclick = () => $("#stickerBook").classList.remove("open");
+
+/* ================= screens ================= */
+const TOKENS = [
+  {id:"letters", label:"Letters", txt:{en:"Abc", hi:"अआ", kn:"ಅಆ"}, c:"turmeric"},
+  {id:"words",   label:"Words",   e:"🧩",  c:"lac"},
+  {id:"fruits",  label:"Fruits",  e:"🥭",  c:"leaf"},
+  {id:"numbers", label:"Numbers", txt:{en:"123", hi:"123", kn:"123"}, c:"peacock"},
+  {id:"colors",  label:"Colors",  e:"🎨",  c:"kumkum"},
+  {id:"animals", label:"Animals", e:"🐘",  c:"turmeric"},
+  {id:"stories", label:"Stories", e:"📖",  c:"lac"},
+  {id:"talk",    label:"Talk",    e:"💬",  c:"peacock"},
+  {id:"calm",    label:"Calm",    e:"🫧",  c:"leaf"},
+  {id:"play",    label:"Play",    e:"🤸",  c:"kumkum"},
+];
+const ACT = {};
+
+function home(){
+  nav++; hush(); face("happy"); document.body.classList.remove("in-activity");
+  main.innerHTML = "";
+  const tray = el("div", {class: "tray"});
+  for (const tk of TOKENS){
+    tray.append(el("div", {class: "tok"},
+      el("button", {class: "disc c-" + tk.c, "aria-label": t(tk.label), on: {click: () => open(tk.id)}},
+        el("span", {class: "face" + (tk.txt ? " txt" : "")}, tk.txt ? tk.txt[S.lang] : tk.e)),
+      el("span", {class: "lbl"}, t(tk.label))));
+  }
+  main.append(tray);
+  if (!C) main.append(el("p", {class: "note", style: "color:var(--ivory);margin:20px auto"}, t("Loading KIKO's games…")));
+  bubble.textContent = lastSaid = t("Hi friend! What shall we play?");
+}
+
+function open(id, arg){
+  if (!C){ say(t("Wait a moment, my games are still waking up!")); return; }
+  nav++; hush(); face("happy"); document.body.classList.add("in-activity");
+  window.scrollTo({top: 0});
+  ACT[id](arg);
+}
+
+// Board skeleton: home button, title, optional tabs. Returns the body element.
+function board(title, tabs){
+  main.innerHTML = "";
+  const body = el("div", {class: "bbody"});
+  const head = el("div", {class: "bhead"},
+    el("button", {class: "home-tok", "aria-label": "Home", on: {click: home}}, "⌂"),
+    el("h1", {class: "btitle"}, t(title)));
+  if (tabs){
+    const row = el("div", {class: "tabs", role: "group"});
+    tabs.forEach(([label, fn], i) => {
+      const b = el("button", {class: "tab", "aria-pressed": i === 0 ? "true" : "false", on: {click: () => {
+        row.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-pressed", "false"));
+        b.setAttribute("aria-pressed", "true"); nav++; hush(); face("happy"); body.innerHTML = ""; fn(body);
+      }}}, t(label));
+      row.append(b);
+    });
+    head.append(row);
+  }
+  main.append(el("section", {class: "board"}, head, body));
+  if (tabs){ tabs[0][1](body); }
+  return body;
+}
+
+// Generic "find the right one" round used by many games.
+function quiz(body, {ask, items, render, isRight, praise, oops, again, small}){
+  const id = nav;
+  body.innerHTML = "";
+  body.append(el("p", {class: "prompt"}, ask.text));
+  const row = el("div", {class: "row"});
+  let tried = false;
+  for (const it of items){
+    const b = el("button", {class: "tile" + (small ? " small" : ""), "aria-label": it.label || "", on: {click: async () => {
+      if (!live(id)) return;
+      if (isRight(it)){
+        b.classList.add("right"); row.querySelectorAll("button").forEach(x => x.disabled = x !== b);
+        cheer(); if (!tried) addStar();
+        await say(praise(it)); if (live(id)) again();
+      } else {
+        tried = true; b.classList.remove("wrong"); void b.offsetWidth; b.classList.add("wrong"); chime(false);
+        say(oops(it));
+      }
+    }}});
+    render(b, it); row.append(b);
+  }
+  body.append(row);
+  say(ask.speak || ask.text);
+}
+
+/* ---------- Letters ---------- */
+ACT.letters = () => {
+  const L = C.letters;
+  const show = l => en() ? l.l + l.l.toLowerCase() : l.l;
+  board("Letters", [["👀 Learn", learn], ["🔍 Find", find], ["✏️ Trace", trace]]);
+
+  function learn(body, i){
+    body.innerHTML = "";
+    if (i == null){
+      body.append(el("p", {class: "prompt"}, t("Tap a letter!")));
+      const g = el("div", {class: "grid"});
+      L.forEach((l, k) => g.append(el("button", {class: "tile", "aria-label": l.l, on: {click: () => learn(body, k)}}, l.l)));
+      body.append(g); say(t("Tap a letter to hear it!")); return;
+    }
+    const l = L[i];
+    body.append(el("div", {class: "big"},
+      el("div", {class: "glyph"}, show(l)),
+      el("button", {class: "pic", "aria-label": l.word, on: {click: () => say(t("{l} is for {word}.", {l: l.l, word: l.word}))}}, l.e),
+      el("div", {}, el("div", {class: "name"}, l.word), el("div", {class: "sub"}, t("{l} is for {word}", {l: l.l, word: l.word})))));
+    body.append(el("div", {class: "ctrl"},
+      el("button", {class: "pill soft", "aria-label": "Previous", on: {click: () => learn(body, (i + L.length - 1) % L.length)}}, "◀"),
+      el("button", {class: "pill soft", on: {click: () => learn(body)}}, t("All letters")),
+      el("button", {class: "pill", "aria-label": "Next", on: {click: () => learn(body, (i + 1) % L.length)}}, "▶")));
+    say(t("{l}. {l} is for {word}!", {l: l.l, word: l.word}));
+  }
+
+  function find(body){
+    const tg = pick(L);
+    quiz(body, {
+      ask: {text: t("Find the letter {l}!", {l: tg.l})},
+      items: options(tg, L, nOpts()),
+      render: (b, it) => { b.textContent = it.l; },
+      isRight: it => it === tg,
+      praise: () => t("Yes! That's {l}. {l} is for {word}!", {l: tg.l, word: tg.word}),
+      oops: it => t("That's {x}. Try again!", {x: it.l}),
+      again: () => find(body),
+    });
+  }
+
+  function trace(body, k){
+    const l = k == null ? L[0] : L[k];
+    const idx = L.indexOf(l);
+    body.innerHTML = "";
+    const lower = en() && trace.lower && S.age !== "3-5";
+    const ch = lower ? l.l.toLowerCase() : l.l;
+    body.append(el("p", {class: "prompt"}, t("Trace the letter {l}", {l: ch})));
+    const size = Math.min(380, main.clientWidth - 90);
+    const dpr = window.devicePixelRatio || 1;
+    const cv = el("canvas", {class: "trace", width: size * dpr, height: size * dpr, style: `width:${size}px;height:${size}px`, "aria-label": "Drawing space"});
+    const ctx = cv.getContext("2d"); ctx.scale(dpr, dpr);
+    const mask = document.createElement("canvas"); mask.width = mask.height = size;
+    const mctx = mask.getContext("2d");
+    const px = Math.round(size * (en() ? 0.78 : 0.62));
+    const font = `700 ${px}px Andika, "Baloo 2", "Baloo Tamma 2", Verdana, sans-serif`;
+    const yMid = size * (en() ? 0.53 : 0.56);
+    const drawGuide = () => {
+      ctx.clearRect(0, 0, size, size);
+      ctx.font = font; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillStyle = "rgba(34,32,28,.13)"; ctx.fillText(ch, size / 2, yMid);
+      ctx.setLineDash([6, 10]); ctx.lineWidth = 3; ctx.strokeStyle = "rgba(34,32,28,.35)"; ctx.strokeText(ch, size / 2, yMid); ctx.setLineDash([]);
+    };
+    const user = document.createElement("canvas"); user.width = user.height = size;
+    const uctx = user.getContext("2d");
+    document.fonts.load(font, ch).then(() => {
+      drawGuide();
+      mctx.font = font; mctx.textAlign = "center"; mctx.textBaseline = "middle"; mctx.fillStyle = "#000"; mctx.fillText(ch, size / 2, yMid);
+    });
+    let drawing = false, last = null;
+    const pt = e => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+    const line = (a, b) => {
+      for (const c of [ctx, uctx]){
+        c.strokeStyle = c === ctx ? "#D7263D" : "#000"; c.lineWidth = size * 0.075; c.lineCap = c.lineJoin = "round";
+        c.beginPath(); c.moveTo(...a); c.lineTo(...b); c.stroke();
+      }
+    };
+    cv.addEventListener("pointerdown", e => { drawing = true; last = pt(e); line(last, last); cv.setPointerCapture(e.pointerId); });
+    cv.addEventListener("pointermove", e => { if (!drawing) return; const p = pt(e); line(last, p); last = p; });
+    cv.addEventListener("pointerup", () => drawing = false);
+    cv.addEventListener("pointercancel", () => drawing = false);
+    body.append(cv);
+    const id = nav;
+    const check = async () => {
+      const m = mctx.getImageData(0, 0, size, size).data, u = uctx.getImageData(0, 0, size, size).data;
+      let G = 0, Cv = 0, U = 0, O = 0;
+      for (let p = 3; p < m.length; p += 16){        // every 4th pixel is plenty
+        const g = m[p] > 40, d = u[p] > 40;
+        if (g){ G++; if (d) Cv++; } if (d){ U++; if (g) O++; }
+      }
+      const coverage = G ? Cv / G : 0, neat = U ? O / U : 0;
+      const need = en() ? 0.45 : 0.4;                  // Hindi/Kannada letters have more strokes
+      if (coverage > need && neat > need){
+        cheer(); addStar(); await say(t("Beautiful {l}! {l} is for {word}!", {l: ch, word: l.word}));
+        if (live(id)) trace(body, (idx + 1) % L.length);
+      } else if (U === 0){ say(t("Use your finger to draw on the letter!")); }
+      else { chime(false); say(coverage <= need ? t("Nice try! Draw over more of the letter.") : t("Try to stay on the letter. You can do it!")); }
+    };
+    body.append(el("div", {class: "ctrl"},
+      el("button", {class: "pill soft", on: {click: () => { uctx.clearRect(0, 0, size, size); drawGuide(); }}}, t("Clear")),
+      en() && S.age !== "3-5" ? el("button", {class: "pill soft", on: {click: () => { trace.lower = !trace.lower; trace(body, idx); }}}, lower ? "ABC" : "abc") : null,
+      el("button", {class: "pill soft", on: {click: () => trace(body, (idx + 1) % L.length)}}, t("Skip")),
+      el("button", {class: "pill", on: {click: check}}, t("Done!"))));
+    say(t("Let's trace {l}. Follow the dotted line with your finger.", {l: ch}));
+  }
+};
+
+/* ---------- Words ---------- */
+const DECOYS = {en: "aeioumstrb".split(""), hi: ["क", "म", "न", "र", "स", "प"], kn: ["ಕ", "ಮ", "ನ", "ರ", "ಸ", "ಪ"]};
+ACT.words = () => {
+  const body = board("Words");
+  const tilesOf = w => w.tiles || w.w.split("");
+  const small = en() ? 3 : 2, mid = en() ? 4 : 3;     // English counts letters; Hindi/Kannada count akshara tiles
+  const pool = C.words.filter(w => S.age === "3-5" ? tilesOf(w).length === small : S.age === "6-8" ? tilesOf(w).length <= mid : true);
+  let lastW = null;
+  const round = () => {
+    const id = nav;
+    let w = pick(pool); while (pool.length > 1 && w === lastW) w = pick(pool); lastW = w;
+    const parts = tilesOf(w);
+    const extra = S.age === "9-12" ? [pick(DECOYS[S.lang].filter(c => !parts.includes(c)))] : [];
+    body.innerHTML = "";
+    body.append(el("button", {class: "big", style: "font-size:150px", "aria-label": w.w, on: {click: () => say(w.w)}}, el("span", {class: "pic"}, w.e)));
+    const slots = el("div", {class: "slots"});
+    parts.forEach(c => slots.append(el("div", {class: "slot" + (S.age === "3-5" ? " hint" : "")}, S.age === "3-5" ? c : "")));
+    body.append(slots);
+    const row = el("div", {class: "row"});
+    let pos = 0, mistakes = 0;
+    shuffle([...parts, ...extra]).forEach(c => {
+      const b = el("button", {class: "tile small", "aria-label": c, on: {click: async () => {
+        if (!live(id) || b.disabled) return;
+        if (c === parts[pos]){
+          const sl = slots.children[pos]; sl.textContent = c; sl.classList.remove("hint"); sl.classList.add("full");
+          b.disabled = true; pos++; say(c, {show: false});
+          if (pos === parts.length){
+            cheer(); if (mistakes < 2) addStar();
+            await say(`${w.w}! ${parts.join(", ")}. ${w.w}!`);
+            if (live(id)) setTimeout(() => live(id) && round(), 600);
+          }
+        } else { mistakes++; b.classList.remove("wrong"); void b.offsetWidth; b.classList.add("wrong"); chime(false); say(t("Hmm, try another letter."), {show: false}); }
+      }}}, c);
+      row.append(b);
+    });
+    body.append(row);
+    const ctrl = el("div", {class: "ctrl"},
+      el("button", {class: "pill soft", on: {click: () => say(w.w)}}, t("🔊 Hear it")),
+      el("button", {class: "pill soft", on: {click: round}}, t("New word")));
+    if (Rec) ctrl.append(el("button", {class: "pill", on: {click: () => listen(tr => {
+      if (tr.toLowerCase().includes(w.w.toLowerCase())){ cheer(); addStar(); say(t("I heard {w}! Great reading!", {w: w.w})); }
+      else say(t("I heard \"{t}\". Say {w}!", {t: tr, w: w.w}));
+    })}}, t("🎤 Say it")));
+    body.append(ctrl);
+    say(S.age === "3-5" ? t("This is {w}. Tap the letters to spell it!", {w: art(w.w)}) : t("What is this? Spell the word!"));
+  };
+  round();
+};
+
+/* ---------- Fruits ---------- */
+ACT.fruits = () => {
+  const F = C.fruits;
+  const hindi = f => en() && S.hindi && f.hi && f.hi !== f.name ? ` In Hindi, we say ${f.hi}.` : "";
+  board("Fruits", [["👀 Meet", meet], ["🔍 Find", find], ["🎨 Colors", colors]]);
+  function meet(body, i = 0){
+    const f = F[i]; body.innerHTML = "";
+    body.append(el("div", {class: "big"},
+      el("button", {class: "pic", "aria-label": f.name, on: {click: () => say(f.name + "! " + hindi(f) + " " + f.fact)}}, f.e),
+      el("div", {}, el("div", {class: "name"}, f.name),
+        en() && S.hindi && f.hi && f.hi !== f.name ? el("div", {class: "sub"}, "Hindi: " + f.hi) : null,
+        el("div", {class: "sub"}, f.fact))));
+    body.append(el("div", {class: "ctrl"},
+      el("button", {class: "pill soft", "aria-label": "Previous", on: {click: () => meet(body, (i + F.length - 1) % F.length)}}, "◀"),
+      el("button", {class: "pill", "aria-label": "Next", on: {click: () => meet(body, (i + 1) % F.length)}}, "▶")));
+    say((en() && /s$/.test(f.name) ? `These are ${f.name.toLowerCase()}.` : t("This is {f}.", {f: art(f.name)})) + hindi(f) + " " + f.fact);
+  }
+  function find(body){
+    const tg = pick(F);
+    quiz(body, {ask: {text: t("Find the {f}!", {f: tg.name})}, items: options(tg, F, nOpts()),
+      render: (b, it) => { b.classList.add("emo"); b.textContent = it.e; b.setAttribute("aria-label", it.name); },
+      isRight: it => it === tg, praise: () => t("Yes! That's the {f}! {fact}", {f: tg.name, fact: tg.fact}),
+      oops: it => t("That's {f}. Find the {t}!", {f: art(it.name), t: tg.name}), again: () => find(body)});
+  }
+  function colors(body){
+    const tg = pick(F);
+    const others = sample(F.filter(f => f.color !== tg.color), nOpts() - 1, []);
+    quiz(body, {ask: {text: t("Which fruit is {c}?", {c: tg.color})}, items: shuffle([tg, ...others]),
+      render: (b, it) => { b.classList.add("emo"); b.textContent = it.e; b.setAttribute("aria-label", it.name); },
+      isRight: it => it === tg, praise: () => t("Yes! That's the {f}!", {f: tg.name}),
+      oops: () => t("Try again! Which fruit is {c}?", {c: tg.color}), again: () => colors(body)});
+  }
+};
+
+/* ---------- Numbers ---------- */
+// hiFem: Hindi says "कितनी" for these, and our Hindi question uses "कितने", so skip them in Hindi.
+const COUNTABLES = [["🍎","apples"],["⭐","stars"],["🐟","fish",1],["🦆","ducks",1],["🍌","bananas"],["🎈","balloons"],["🐞","ladybugs"],["🌸","flowers"],["🚗","cars",1],["🪁","kites",1]];
+ACT.numbers = () => {
+  const body = board("Numbers");
+  const max = S.age === "3-5" ? 5 : 10;
+  const things = COUNTABLES.filter(c => !(S.lang === "hi" && c[2]));
+  const near = (n, lo, hi) => { const s = new Set([n]); while (s.size < 3){ const k = n + pick([-2, -1, 1, 2, 3]); if (k >= lo && k <= hi) s.add(k); } return shuffle([...s]); };
+  const round = () => {
+    const id = nav;
+    if (S.age === "9-12"){
+      const a = 1 + Math.floor(Math.random() * 9), b = 1 + Math.floor(Math.random() * 9), [e] = pick(things);
+      quiz(body, {ask: {text: `${a} + ${b} = ?`, speak: t("What is {a} plus {b}?", {a, b})}, items: near(a + b, 2, 18),
+        render: (bt, n) => { bt.textContent = n; }, isRight: n => n === a + b,
+        praise: () => t("Yes! {a} plus {b} is {s}!", {a, b, s: a + b}), oops: n => t("Not {n}. Count again!", {n}), again: round});
+      const box = el("div", {class: "feltbox"}, ...Array.from({length: a}, () => el("span", {style: "font-size:40px"}, e)),
+        el("span", {class: "plus"}, "+"), ...Array.from({length: b}, () => el("span", {style: "font-size:40px"}, e)));
+      body.insertBefore(box, body.children[1]);
+      return;
+    }
+    const n = 1 + Math.floor(Math.random() * max), [e, key] = pick(things), name = t(key);
+    quiz(body, {ask: {text: t("How many {name}?", {name}), speak: t("How many {name}? Tap each one to count!", {name})}, items: near(n, 1, max),
+      render: (bt, k) => { bt.textContent = k; }, isRight: k => k === n,
+      praise: () => t("Yes! {n} {name}!", {n, name}), oops: k => t("Not {n}. Let's count again!", {n: k}), again: round});
+    let count = 0;
+    const box = el("div", {class: "feltbox"});
+    for (let i = 0; i < n; i++){
+      const b = el("button", {"aria-label": name, on: {click: () => { if (!live(id) || b.dataset.n) return; count++; b.dataset.n = count; say(String(count), {show: false}); }}}, e);
+      box.append(b);
+    }
+    body.insertBefore(box, body.children[1]);
+  };
+  round();
+};
+
+/* ---------- Colors & shapes ---------- */
+const COLORS = [["red","#E53935"],["blue","#1E6FD9"],["yellow","#F7C531"],["green","#2E9E5B"],["orange","#F57C00"],["purple","#7B3FA0"],["pink","#EC6FA8"],["brown","#8D5A3B"],["black","#222222"],["white","#FFFFFF"]];
+const SHAPES = {
+  circle: '<circle cx="50" cy="50" r="40"/>',
+  square: '<rect x="12" y="12" width="76" height="76" rx="6"/>',
+  triangle: '<path d="M50 10 L92 88 L8 88 Z"/>',
+  star: '<path d="M50 6 L61 38 L95 38 L67 58 L78 92 L50 71 L22 92 L33 58 L5 38 L39 38 Z"/>',
+  heart: '<path d="M50 88 C10 60 4 34 22 20 C36 9 48 18 50 28 C52 18 64 9 78 20 C96 34 90 60 50 88 Z"/>',
+  rectangle: '<rect x="6" y="26" width="88" height="48" rx="6"/>',
+  oval: '<ellipse cx="50" cy="50" rx="44" ry="30"/>',
+  diamond: '<path d="M50 6 L90 50 L50 94 L10 50 Z"/>',
+};
+ACT.colors = () => {
+  const blob = hex => `<svg viewBox="0 0 100 100" width="84" height="84"><path d="M52 8 C78 8 94 26 92 50 C90 76 72 94 48 92 C24 90 8 72 10 48 C12 24 28 8 52 8 Z" fill="${hex}" stroke="#22201C" stroke-opacity=".25" stroke-width="3"/></svg>`;
+  function colorRound(body){
+    const pool = S.age === "3-5" ? COLORS.slice(0, 6) : COLORS;
+    const tg = pick(pool);
+    quiz(body, {ask: {text: t("Tap the {c} one!", {c: t(tg[0])})}, items: options(tg, pool, nOpts()),
+      render: (b, it) => { b.innerHTML = blob(it[1]); b.setAttribute("aria-label", t(it[0])); },
+      isRight: it => it === tg, praise: () => t("Yes! That's {c}!", {c: t(tg[0])}),
+      oops: it => t("That one is {x}. Find {c}!", {x: t(it[0]), c: t(tg[0])}), again: () => colorRound(body)});
+  }
+  function shapeRound(body){
+    const names = Object.keys(SHAPES).slice(0, S.age === "3-5" ? 5 : 8);
+    const tg = pick(names), fill = pick(COLORS.slice(0, 8))[1];
+    quiz(body, {ask: {text: t("Find the {s}!", {s: t(tg)})}, items: options(tg, names, nOpts()),
+      render: (b, it) => { b.innerHTML = `<svg viewBox="0 0 100 100" width="84" height="84" fill="${fill}">${SHAPES[it]}</svg>`; b.setAttribute("aria-label", t(it)); },
+      isRight: it => it === tg, praise: () => t("Yes! That's the {s}!", {s: t(tg)}),
+      oops: it => t("That's the {x}. Find the {s}!", {x: t(it), s: t(tg)}), again: () => shapeRound(body)});
+  }
+  board("Colors & shapes", [["🎨 Colors", colorRound], ["🔷 Shapes", shapeRound]]);
+};
+
+/* ---------- Animals ---------- */
+ACT.animals = () => {
+  const A = C.animals;
+  board("Animals", [["👀 Meet", meet], ["🔊 Who says?", who]]);
+  function meet(body){
+    body.innerHTML = "";
+    body.append(el("p", {class: "prompt"}, t("Tap an animal!")));
+    const g = el("div", {class: "grid"});
+    A.forEach(a => g.append(el("button", {class: "tile emo", "aria-label": a.name, on: {click: () => say(t("The {a} says {s} {fact}", {a: lc(a.name), s: a.sound, fact: a.fact}))}}, a.e)));
+    body.append(g); say(t("Tap an animal to hear what it says!"));
+  }
+  function who(body){
+    const tg = pick(A);
+    quiz(body, {ask: {text: t("Who says {s}", {s: tg.sound})}, items: options(tg, A, nOpts()),
+      render: (b, it) => { b.classList.add("emo"); b.textContent = it.e; b.setAttribute("aria-label", it.name); },
+      isRight: it => it === tg, praise: () => t("Yes! The {a} says {s}", {a: lc(tg.name), s: tg.sound}),
+      oops: it => t("The {a} says {s} Try again!", {a: lc(it.name), s: it.sound}), again: () => who(body)});
+  }
+};
+
+/* ---------- Stories (read-along) ---------- */
+const COLORS_BOOK = ["var(--lac)", "var(--leaf)", "var(--peacock)", "var(--kumkum)", "var(--turmeric-dark)"];
+const readDone = new Set();
+ACT.stories = (storyId) => {
+  const body = board("Stories");
+  const prefix = C.lesson_prefix || "And the lesson is:";
+  if (storyId){ read(storyId); return; }
+  const shelf = el("div", {class: "shelf"});
+  C.stories.forEach((s, i) => shelf.append(el("button", {class: "book", style: `background:${COLORS_BOOK[i % 5]}`, "aria-label": s.title, on: {click: () => read(s.id)}},
+    el("span", {class: "bk-e"}, s.e), el("span", {class: "bk-t"}, s.title))));
+  body.append(el("p", {class: "prompt"}, t("Pick a book!")), shelf,
+    el("button", {class: "pill", on: {click: () => open("talk", {mode: "story", send: t("Tell me a brand new story")})}}, t("✨ Make up a new story")));
+  say(t("Pick a book, and I will read it to you!"));
+
+  function read(id){
+    const s = C.stories.find(x => x.id === id); if (!s) return;
+    const nid = ++nav; hush(); body.innerHTML = "";
+    const lines = s.lines.map(tx => el("p", {on: {click: () => { stop(); say(tx, {show: false}); }}}, tx));
+    const lesson = el("div", {class: "lesson", style: "display:none"}, prefix + " " + s.lesson);
+    let playing = false;
+    const btn = el("button", {class: "pill", on: {click: () => playing ? stop() : play()}}, t("▶ Read to me"));
+    const stop = () => { playing = false; hush(); btn.textContent = t("▶ Read to me"); };
+    async function play(){
+      playing = true; btn.textContent = t("⏸ Stop");
+      await say(s.title + ".", {show: false});
+      for (const p of lines){
+        if (!playing || !live(nid)) return;
+        lines.forEach(x => x.classList.remove("now")); p.classList.add("now"); p.scrollIntoView({block: "nearest"});
+        await say(p.textContent, {show: false});
+      }
+      if (!playing || !live(nid)) return;
+      lines.forEach(x => x.classList.remove("now")); lesson.style.display = "block";
+      await say(prefix + " " + s.lesson);
+      if (!readDone.has(id)){ readDone.add(id); cheer(); addStar(); }
+      stop();
+    }
+    body.append(el("p", {class: "prompt"}, s.e + " " + s.title), el("p", {class: "note", style: "margin:-14px 0 0"}, s.from),
+      el("div", {class: "reader"}, lines), lesson,
+      el("div", {class: "ctrl"}, btn, el("button", {class: "pill soft", on: {click: () => { stop(); ACT.stories(); }}}, t("📚 All books"))));
+    bubble.textContent = lastSaid = t("Tap play, or tap any line to hear it.");
+    play();
+  }
+};
+
+/* ---------- Talk (KIKO's brain) ---------- */
+const MODES = [["chat","💬 Chat"],["story","📖 Story"],["interactive_story","🎲 Story game"],["learn","🧠 Learn"],["culture","🪔 Folk tales"],["feelings","💛 Feelings"],["play","🤸 Play ideas"]];
+let talkMode = "chat";
+let talkLog = [];
+async function askBrain(text, mode){
+  if (WEBSITE){
+    let r;
+    try{ r = await KikoBrain.reply(text, {mode, age: S.age, lang: S.lang, content: C, contentEn: C_EN || C}); }
+    catch(e){ console.log("brain error", e); return KikoBrain.fallbackText(S.lang); }     // never show laptop-only messages on the website
+    if (r.source === "need_brain"){ showBrainCard(); return t("Let's get my brain first! Tap a button above."); }
+    return r.text;
+  }
+  const r = await fetch(BASE + "/chat", {method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({message: text, mode, age: S.age, lang: S.lang, session_id: SESSION})});
+  return (await r.json()).reply;
+}
+
+/* ---------- website mode: download KIKO's brain onto this device ---------- */
+let brainCard = null, brainLoading = null;
+function loadBrain(key){
+  if (brainLoading) return brainLoading;
+  const bar = brainCard && brainCard.querySelector(".fillbar span"), msg = brainCard && brainCard.querySelector(".brainmsg");
+  const cached = KikoBrain.savedBrain() === key;
+  if (msg) msg.textContent = cached ? t("Waking up my brain…") : t("Downloading my brain… {p}%", {p: 0});
+  if (brainCard) brainCard.querySelectorAll("button").forEach(b => b.disabled = true);
+  face("thinking");
+  brainLoading = KikoBrain.load(key, p => {
+    if (bar) bar.style.width = p + "%";
+    if (msg && !cached) msg.textContent = t("Downloading my brain… {p}%", {p});
+  }, "./").then(() => {
+    face("happy"); if (brainCard){ brainCard.remove(); brainCard = null; }
+    say(t("My brain is ready! Ask me anything."));
+  }).catch(err => {
+    console.log("brain load failed", err); face("sleepy");
+    if (msg) msg.textContent = t("I couldn't download my brain. Check the internet and try again.");
+    if (brainCard) brainCard.querySelectorAll("button").forEach(b => b.disabled = false);
+  }).finally(() => { brainLoading = null; });
+  return brainLoading;
+}
+function showBrainCard(where){
+  if (!WEBSITE || !window.KikoBrain || KikoBrain.isReady()) return;
+  const host = where || document.querySelector(".bbody");
+  if (!host) return;
+  if (brainCard && brainCard.isConnected) return;
+  const rec = KikoBrain.recommended(), M = KikoBrain.MODELS;
+  const btn = (key, label, note) => el("button", {class: "pill" + (key === rec ? "" : " soft"), on: {click: () => loadBrain(key)}},
+    `${t(label)} · ${M[key].size}` + (key === rec ? " ★" : ""), el("br"), el("small", {style: "font-weight:500;font-size:15px;opacity:.85"}, t(note)));
+  brainCard = el("div", {class: "lesson", style: "background:#FCE3A3;text-align:center;width:100%;max-width:760px;font-size:19px;font-weight:600"},
+    el("p", {style: "margin:0 0 12px"}, t("KIKO's brain lives on this device. Download it once, then I can talk even without internet.")),
+    el("div", {class: "ctrl"}, btn("small", "Small brain", "Fast, for phones"), btn("better", "Better brain", "Smarter, for laptops and new phones")),
+    el("p", {class: "brainmsg note", style: "margin:12px auto 6px"}, "★ " + t("Best for this device")),
+    el("div", {class: "fillbar", style: "height:12px;border-radius:6px;background:#fff;overflow:hidden"},
+      el("span", {style: "display:block;height:100%;width:0;background:var(--leaf);transition:width .3s"})));
+  host.prepend(brainCard);
+}
+ACT.talk = (opt = {}) => {
+  const body = board("Talk with KIKO");
+  if (opt.mode) talkMode = opt.mode;
+  const chips = el("div", {class: "chips", role: "group", "aria-label": "Talk mode"});
+  MODES.forEach(([m, label]) => chips.append(el("button", {class: "chip", "aria-pressed": String(m === talkMode), on: {click: e => {
+    talkMode = m; chips.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", String(c === e.currentTarget)));
+  }}}, t(label))));
+  const log = el("div", {class: "chat", "aria-live": "polite"});
+  const quick = el("div", {class: "chips"});
+  const show = (who, text) => {
+    log.append(el("div", {class: "msg " + who}, text)); log.scrollTop = log.scrollHeight;
+    quick.innerHTML = "";
+    if (who === "k" && /\bA\)/.test(text) && /\bB\)/.test(text))
+      ["A", "B"].forEach(x => quick.append(el("button", {class: "pill", on: {click: () => send(x)}}, t("Choice {x}", {x}))));
+  };
+  talkLog.forEach(([w, tx]) => show(w, tx));
+  if (!talkLog.length){ const g = t("Hi friend! Ask me anything, or pick what we should talk about."); talkLog.push(["k", g]); show("k", g); }
+  const input = el("input", {type: "text", placeholder: t("Type to KIKO…"), "aria-label": t("Type to KIKO…"), maxlength: "300",
+    on: {keydown: e => { if (e.key === "Enter") send(input.value); }}});
+  let busy = false;
+  async function send(text){
+    text = (text || "").trim(); if (!text || busy) return;
+    busy = true; input.value = ""; talkLog.push(["u", text]); show("u", text);
+    face("thinking"); bubble.textContent = t("Hmm, let me think…");
+    const id = nav;
+    try{
+      const reply = await askBrain(text, talkMode);
+      talkLog.push(["k", reply]); face("happy");
+      if (live(id)){ show("k", reply); say(reply); }
+    }catch(e){
+      const m = t("Oops! My brain is sleeping. Grown-up: run python kiko_server.py");
+      if (live(id)){ show("k", m); face("sleepy"); bubble.textContent = m; }
+    }finally{ busy = false; }
+  }
+  const bar = el("div", {class: "say"}, input,
+    Rec ? el("button", {class: "mic", "aria-label": "Talk with your voice", on: {click: e => listen(tx => send(tx), e.currentTarget)}}, "🎤") : null,
+    el("button", {class: "pill", on: {click: () => send(input.value)}}, t("Send")));
+  body.append(chips, log, quick, bar);
+  if (WEBSITE && !KikoBrain.isReady()){
+    showBrainCard(body);
+    if (KikoBrain.savedBrain()) loadBrain(KikoBrain.savedBrain());     // downloaded before: wake it from this device
+  }
+  if (opt.send) send(opt.send);
+  else say(t("Ask me anything!"));
+};
+
+/* ---------- Calm corner ---------- */
+async function breathe(ball){
+  const id = nav;
+  for (let i = 0; i < 3 && live(id); i++){
+    if (ball){ ball.classList.add("in"); ball.textContent = t("Breathe in"); }
+    await Promise.all([say(t("Breathe in…")), wait(4000)]);
+    if (!live(id)) return false;
+    if (ball){ ball.classList.remove("in"); ball.textContent = t("Breathe out"); }
+    await Promise.all([say(t("And breathe out…")), wait(4000)]);
+  }
+  return live(id);
+}
+ACT.calm = () => {
+  const body = board("Calm corner");
+  const ball = el("div", {class: "breath"}, t("Ready?"));
+  let running = false;
+  const go = async () => {
+    if (running) return; running = true;
+    const ok = await breathe(ball);
+    running = false; if (ok){ ball.textContent = t("Well done"); say(t("Well done. You are calm and strong.")); }
+  };
+  const feels = el("div", {class: "row"});
+  Object.entries(C.feelings).forEach(([name, f]) => feels.append(el("button", {class: "feel", on: {click: () => say(f.say)}}, el("span", {}, f.e), f.label || name)));
+  body.append(ball, el("button", {class: "pill", on: {click: go}}, t("🫧 Breathe with me")), el("p", {class: "prompt", style: "font-size:26px"}, t("How do you feel?")), feels);
+  say(t("This is our calm corner. Shall we breathe together? Or tell me how you feel."));
+};
+
+/* ---------- Screen-free play ---------- */
+ACT.play = () => {
+  const body = board("Play away from the screen");
+  const show = () => {
+    const idea = pick(C.play_ideas); body.innerHTML = "";
+    body.append(el("div", {style: "font-size:110px"}, "🤸"), el("p", {class: "idea"}, idea),
+      el("div", {class: "ctrl"},
+        el("button", {class: "pill soft", on: {click: show}}, t("Another idea")),
+        el("button", {class: "pill", on: {click: () => { cheer(); addStar(); say(t("Hooray! You did it! Moving and playing makes you strong.")); }}}, t("I did it!"))),
+      el("p", {class: "note"}, t("Go and play, then come back and tap “I did it!”")));
+    say(idea);
+  };
+  show();
+};
+
+/* ================= voice input (Chrome/Edge; needs internet) ================= */
+const Rec = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+function listen(onText, btn){
+  if (!Rec) return;
+  hush();
+  const r = new Rec(); r.lang = SPEECH[S.lang]; r.interimResults = false;
+  face("listening"); bubble.textContent = t("Speak now…"); if (btn) btn.classList.add("on");
+  r.onresult = e => onText(e.results[0][0].transcript);
+  r.onerror = e => { say(e.error === "network" ? t("I can't hear without the internet yet. Please type instead.") : t("I didn't hear that. Try again!")); };
+  r.onend = () => { if (btn) btn.classList.remove("on"); if (kState === "listening") face("happy"); };
+  try{ r.start(); }catch(e){}
+}
+
+/* ================= language ================= */
+// WEBSITE mode = no laptop server (e.g. GitHub Pages): content comes from files, the brain runs in this browser.
+let WEBSITE = false, C_EN = null;
+async function loadContent(){
+  try{
+    const r = await fetch(BASE + "/content?lang=" + S.lang);
+    if (!r.ok) throw new Error("no server");
+    C = await r.json(); WEBSITE = false; return;
+  }catch(e){ WEBSITE = true; }
+  C_EN = C_EN || await (await fetch("kiko/content.json")).json();
+  C = S.lang === "en" ? C_EN
+    : Object.assign({}, C_EN, await (await fetch(`kiko/content_${S.lang}.json`)).json(), {cards: C_EN.cards, lang: S.lang});
+  if (window.KikoBrain) await KikoBrain.init("");
+}
+async function setLang(lang, announce = true){
+  S.lang = LANGS.includes(lang) ? lang : "en"; store.set("settings", S);
+  talkLog = [];                                         // the brain starts a fresh chat in the new language
+  if (window.KikoBrain) KikoBrain.reset();
+  try{ await loadContent(); }catch(e){}
+  applyStatic(); home();
+  if (announce) say(t("Now we speak English!"));
+}
+$("#langBtn").onclick = () => setLang(LANGS[(LANGS.indexOf(S.lang) + 1) % LANGS.length]);
+const SAMPLE = {en: "Hi friend! I'm KIKO.", hi: "नमस्ते दोस्त! मैं KIKO हूँ।", kn: "ನಮಸ್ಕಾರ ಗೆಳೆಯ! ನಾನು KIKO."};
+function panelLang(){ return $("#sLang").value || S.lang; }
+function fillVoices(){
+  loadVoices();
+  const lang = SPEECH[panelLang()], base = panelLang(), pick = $("#sVoicePick");
+  const list = voicesFor(lang);
+  pick.innerHTML = "";
+  pick.append(el("option", {value: ""}, "Automatic"));
+  list.forEach(v => pick.append(el("option", {value: v.name}, `${v.name} (${v.localService ? "offline" : "online"})${badVoices.has(v.name) ? " ✗" : ""}`)));
+  pick.value = (S.voices || {})[base] || "";
+  $("#sVoice").textContent = list.length
+    ? `${list.length} voice(s) found for this language. Press ▶ Test to hear one.`
+    : base === "kn"
+      ? "No Kannada voice found. Open KIKO in Microsoft Edge (online Kannada voices), or add a Kannada voice to the computer. KIKO shows the words meanwhile."
+      : base === "hi"
+        ? "No Hindi voice found. In Windows: Settings → Time & language → Speech → Add voices → Hindi, then restart the browser. Edge also has online Hindi voices."
+        : "No voice found.";
+}
+$("#sVoiceTest").onclick = () => {
+  loadVoices();
+  const lang = SPEECH[panelLang()], name = $("#sVoicePick").value;
+  const v = name ? voices.find(x => x.name === name) : voicesFor(lang).find(x => !badVoices.has(x.name));
+  if (!v){ $("#sVoice").textContent = "No voice to test for this language."; return; }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(SAMPLE[panelLang()]);
+  u.voice = v; u.lang = normLang(v) || lang; u.rate = S.rate;
+  let started = false;
+  $("#sVoice").textContent = "Testing " + v.name + "…";
+  u.onstart = () => { started = true; $("#sVoice").textContent = "Speaking with " + v.name + "…"; };
+  u.onend = () => { if (started){ badVoices.delete(v.name); delete strikes[v.name]; } $("#sVoice").textContent = started ? "✓ " + v.name + " works. Press Done to keep it." : "✗ " + v.name + " made no sound. Pick another voice."; };
+  u.onerror = e => { badVoices.add(v.name); $("#sVoice").textContent = "✗ " + v.name + " didn't work (" + e.error + "). Pick another voice."; };
+  setTimeout(() => { if (!started){ speechSynthesis.cancel(); badVoices.add(v.name); $("#sVoice").textContent = "✗ " + v.name + " didn't start. Pick another voice."; } }, 5000);
+  speechSynthesis.speak(u);
+};
+// Tries every English, Hindi and Kannada voice once and writes down what happened.
+async function tryVoice(v, text){
+  const r = await tryVoiceOnce(v, text);
+  if (r.includes("interrupted") || r.includes("canceled")){ await wait(400); return tryVoiceOnce(v, text); }   // cut off: one more go
+  return r;
+}
+function tryVoiceOnce(v, text){
+  return new Promise(res => {
+    let started = false, done = false;
+    const fin = r => { if (done) return; done = true; res(r); };
+    const u = new SpeechSynthesisUtterance(text);
+    u.voice = v; u.lang = normLang(v); u.rate = 1.1;
+    u.onstart = () => { started = true; markGood(v); };
+    u.onend = () => fin(started ? "✓ spoke" : "✗ ended without sound");
+    u.onerror = e => fin("✗ error: " + e.error);
+    setTimeout(() => { if (!started && !done){ fin("✗ silent (never started)"); speechSynthesis.cancel(); } }, 7000);   // only if still waiting
+    setTimeout(() => { if (!done){ fin("✓ spoke (long)"); speechSynthesis.cancel(); } }, 15000);
+    speechSynthesis.speak(u);
+  });
+}
+$("#sVoiceCheck").onclick = async () => {
+  loadVoices();
+  const rep = $("#sVoiceReport"); rep.style.display = "block";
+  const lines = [`Browser: ${navigator.userAgent.match(/Edg\/[\d.]+|Chrome\/[\d.]+|Firefox\/[\d.]+/)?.[0] || "?"} · total voices: ${voices.length}`];
+  const show = () => rep.textContent = lines.join("\n");
+  for (const lg of ["en", "hi", "kn"]){
+    const list = voicesFor(SPEECH[lg]).slice(0, 6);
+    let picked = null;
+    lines.push(`\n${lg.toUpperCase()}: ${list.length} voice(s)` + (list.length ? "" : "  ← none on this computer/browser"));
+    show();
+    for (const v of list){
+      lines.push(`  … ${v.name} (${v.localService ? "offline" : "online"})`); show();
+      const r = await tryVoice(v, SAMPLE[lg]);
+      if (r.startsWith("✓")){ markGood(v); if (!picked) picked = v; }
+      else { badVoices.add(v.name); delete goodVoices[v.name]; }
+      lines[lines.length - 1] = `  ${r.padEnd(26)} ${v.name} (${v.localService ? "offline" : "online"})`; show();
+    }
+    if (picked){ S.voices = Object.assign({}, S.voices, {[lg]: picked.name}); store.set("settings", S); store.set("goodVoices", goodVoices); }
+    lines.push(picked ? `  ★ Saved: KIKO will use ${picked.name}` : "  ✗ No working voice: KIKO will show the words only"); show();
+  }
+  lines.push("\nDone. The working voices are saved. Press Done and tap a token to hear KIKO."); show();
+  fillVoices();
+};
+if ("speechSynthesis" in window) speechSynthesis.addEventListener("voiceschanged", () => { if ($("#grownups").classList.contains("open")) fillVoices(); });
+
+/* ================= grown-ups (press and hold) ================= */
+function holdButton(btn, ms, fn){
+  let tm = null, fired = false;
+  const start = e => { e.preventDefault(); fired = false; btn.classList.add("holding"); tm = setTimeout(() => { fired = true; btn.classList.remove("holding"); fn(); }, ms); };
+  const stop = () => { clearTimeout(tm); btn.classList.remove("holding"); };
+  btn.addEventListener("pointerdown", start); ["pointerup", "pointerleave", "pointercancel"].forEach(ev => btn.addEventListener(ev, stop));
+  btn.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && !e.repeat) start(e); });
+  btn.addEventListener("keyup", stop);
+  btn.addEventListener("click", () => { if (fired){ fired = false; return; } bubble.textContent = "Grown-ups: press and hold."; });
+}
+holdButton($("#gearRing"), 1200, () => {
+  $("#sLang").value = S.lang; $("#sAge").value = S.age; $("#sTime").value = String(S.minutes); $("#sRate").value = String(S.rate); $("#sHindi").value = S.hindi ? "1" : "0";
+  $("#grownups").classList.add("open"); fillVoices();
+  if (WEBSITE){
+    const k = KikoBrain.savedBrain();
+    $("#sServer").innerHTML = "";
+    $("#sServer").append(k ? `On this device: ${KikoBrain.MODELS[k].label} ${KikoBrain.isReady() ? "✓" : "(saved)"} ` : "Not downloaded yet (Talk shows the download button) ",
+      k ? el("button", {class: "pill soft", style: "padding:6px 12px;font-size:15px", on: {click: async () => { await KikoBrain.forget(); $("#sServer").textContent = "Removed from this device."; }}}, "Delete download") : "");
+  } else {
+    fetch(BASE + "/hello?session_id=check").then(r => r.ok ? "Awake ✓ (laptop server)" : "Not answering").catch(() => "Sleeping: run python kiko_server.py")
+      .then(tx => $("#sServer").textContent = tx);
+  }
+});
+$("#sLang").onchange = fillVoices;
+$("#sDone").onclick = () => {
+  S.age = $("#sAge").value; S.minutes = +$("#sTime").value; S.rate = +$("#sRate").value; S.hindi = $("#sHindi").value === "1";
+  S.voices = Object.assign({}, S.voices, {[panelLang()]: $("#sVoicePick").value});      // "" = automatic
+  $("#grownups").classList.remove("open");
+  if ($("#sLang").value !== S.lang) setLang($("#sLang").value); else { store.set("settings", S); home(); }
+};
+$("#sReset").onclick = () => { stars = 0; store.set("stars", 0); showStars(); };
+
+/* ================= screen time ================= */
+let used = 0;
+setInterval(() => {
+  if (document.visibilityState !== "visible" || $("#restVeil").classList.contains("open") || document.body.classList.contains("voice-only")) return;
+  used++;
+  if (S.minutes && used >= S.minutes * 60 && C){
+    hush(); face("sleepy");
+    const idea = pick(C.play_ideas); $("#restIdea").textContent = idea; $("#restVeil").classList.add("open");
+    say(t("We played a lot! Let's rest our eyes and play away from the screen. {idea}", {idea}));
+  }
+}, 1000);
+holdButton($("#restHold"), 2000, () => { used = 0; $("#restVeil").classList.remove("open"); face("happy"); });
+
+/* ================= voice-only mode ================= */
+$("#voBtn").onclick = () => {
+  const on = document.body.classList.toggle("voice-only");
+  $("#voBtn").setAttribute("aria-label", on ? "Show the screen again" : "Voice only mode: rest your eyes");
+  $("#voBtn .ico").textContent = on ? "☀️" : "🌙";
+  if (on){ nav++; hush(); say(t("Let's rest our eyes. Just listen and talk with me!")); } else home();
+};
+$("#voTalk").onclick = () => {
+  if (!Rec){ say(t("Talking needs Chrome or Edge.")); return; }
+  listen(async tx => {
+    face("thinking");
+    try{ const reply = await askBrain(tx, "chat"); face("happy"); say(reply); }
+    catch(e){ face("sleepy"); say(t("My brain is sleeping right now.")); }
+  });
+};
+$("#voStory").onclick = async () => {
+  if (!C) return; const s = pick(C.stories), id = ++nav;
+  await say(s.title + ".");
+  for (const line of s.lines){ if (!live(id)) return; await say(line); }
+  if (live(id)) say((C.lesson_prefix || "And the lesson is:") + " " + s.lesson);
+};
+$("#voSong").onclick = () => { ++nav; breathe(null); };
+
+/* ================= RFID cards (USB readers type the ID + Enter) ================= */
+let rfid = "", rfidT = 0;
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+  const now = Date.now();
+  if (now - rfidT > 120) rfid = "";          // readers type very fast; people don't
+  rfidT = now;
+  if (/^[0-9A-Fa-f]$/.test(e.key)) rfid += e.key;
+  else if (e.key === "Enter" && rfid.length >= 6){ e.preventDefault(); card(rfid); rfid = ""; }
+});
+function card(tag){
+  const c = C && C.cards && C.cards[tag];
+  if (!c){ say(t("Ooh, a new card! I don't know it yet. Ask a grown-up to teach me.")); bubble.textContent = "New card: " + tag; return; }
+  document.body.classList.remove("voice-only");
+  if (c.open === "story") open("stories", c.story); else open(c.open);
+}
+
+/* ================= start ================= */
+$("#kikoBtn").onclick = () => say(lastSaid || t("Hi friend! What shall we play?"));
+showStars();
+applyStatic();
+home();
+loadContent().then(() => {
+  applyStatic(); home();
+  if (WEBSITE && "serviceWorker" in navigator && window.isSecureContext) navigator.serviceWorker.register("sw.js").catch(() => {});
+})
+  .catch(() => { const n = main.querySelector(".note"); if (n) n.textContent = "I can't find my games. Grown-up: run python kiko_server.py, then refresh."; face("sleepy"); });
+</script>
+</body>
+</html>
